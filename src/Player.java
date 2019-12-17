@@ -1,4 +1,4 @@
 public class Player {
-    private int[] position = new int[2];
+    private int[] pos = new int[2];
 
 }
