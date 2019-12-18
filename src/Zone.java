@@ -14,4 +14,10 @@ public class Zone {
         rect[3]=height;
 
     }
+    public boolean safe(){
+        if(zoneType==DEATH){
+            return false;
+        }
+        return true;
+    }
 }
