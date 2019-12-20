@@ -1,11 +1,14 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class FroggerGame extends JFrame{
-    GamePanel game;
-    Timer myTimer;
+    private GamePanel game;
+    private Timer myTimer;
     public FroggerGame(){
         super("Frogger");
         // Creating the JPanel with GamePanel class
@@ -55,28 +58,44 @@ class GamePanel extends JPanel implements KeyListener{
         ready = false;
     }
     public void paintComponent(Graphics g){
+        BufferedImage background1= null;
+        try {
+            background1 = ImageIO.read(new File("Images/Background/Background1.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         g.setColor(new Color(151, 158, 255));
         g.fillRect(0,0,getWidth(),getHeight());
+        g.drawImage(background1,0,0,this);
         g.drawImage(player.getCurrentImage(), player.getPos(player.X), player.getPos(player.Y),this);
     }
     // Keyboard related methods
     @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_W){
-            System.out.println("up");
-            player.movePlayer(0,-50);
+        if(player.getPos(player.Y)>0) {
+            if (e.getKeyCode() == KeyEvent.VK_W) {
+                System.out.println("up");
+                player.movePlayer(0, -50);
+            }
         }
-        if(e.getKeyCode() == KeyEvent.VK_S){
-            System.out.println("down");
-            player.movePlayer(0,50);
+        if(player.getPos(player.Y)<gameFrame.getHeight()-100) {
+            if (e.getKeyCode() == KeyEvent.VK_S) {
+                System.out.println(gameFrame.getWidth());
+                System.out.println("down");
+                player.movePlayer(0, 50);
+            }
         }
-        if(e.getKeyCode() == KeyEvent.VK_A){
-            System.out.println("left");
-            player.movePlayer(-50,0);
+        if(player.getPos(player.X)>0) {
+            if (e.getKeyCode() == KeyEvent.VK_A) {
+                System.out.println("left");
+                player.movePlayer(-50, 0);
+            }
         }
-        if(e.getKeyCode() == KeyEvent.VK_D){
-            System.out.println("right");
-            player.movePlayer(50,0);
+        if(player.getPos(player.X)<gameFrame.getWidth()-100) {
+            if (e.getKeyCode() == KeyEvent.VK_D) {
+                System.out.println("right");
+                player.movePlayer(50, 0);
+            }
         }
     }
     @Override
