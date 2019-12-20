@@ -37,14 +37,14 @@ public class FroggerGame extends JFrame{
 class GamePanel extends JPanel implements KeyListener{
     public boolean ready = true;
     private FroggerGame gameFrame;
+    private Player player = new Player(0,0, "Images/Frog");
     // Images
-    private BufferedImage[] frogSprites;
     public GamePanel(FroggerGame game){
         gameFrame = game;
         setSize(700,650);
         addKeyListener(this);
     }
-    // All related
+    // All window related methods
     public void addNotify() {
         super.addNotify();
         requestFocus();
@@ -55,33 +55,32 @@ class GamePanel extends JPanel implements KeyListener{
         ready = false;
     }
     public void paintComponent(Graphics g){
-        //System.out.println("Painting");
-        g.setColor(new Color(255, 0, 10));
+        g.setColor(new Color(151, 158, 255));
         g.fillRect(0,0,getWidth(),getHeight());
+        g.drawImage(player.getCurrentImage(), player.getPos(player.X), player.getPos(player.Y),this);
     }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
+    // Keyboard related methods
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_W){
             System.out.println("up");
+            player.movePlayer(0,-50);
         }
         if(e.getKeyCode() == KeyEvent.VK_S){
             System.out.println("down");
+            player.movePlayer(0,50);
         }
         if(e.getKeyCode() == KeyEvent.VK_A){
             System.out.println("left");
+            player.movePlayer(-50,0);
         }
         if(e.getKeyCode() == KeyEvent.VK_D){
             System.out.println("right");
+            player.movePlayer(50,0);
         }
     }
-
     @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
+    public void keyReleased(KeyEvent e) {}
+    @Override
+    public void keyTyped(KeyEvent e) {}
 }
