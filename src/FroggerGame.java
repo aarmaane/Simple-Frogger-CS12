@@ -84,7 +84,7 @@ class GamePanel extends JPanel implements KeyListener{
                     System.out.println("up");
                     player.setMove(0);
                     player.setFrame(1);
-                    player.movePlayer(0, -25);
+                    player.movePlayer(0, -50);
             }
         }
 
@@ -94,7 +94,7 @@ class GamePanel extends JPanel implements KeyListener{
                     System.out.println("down");
                     player.setMove(1);
                     player.setFrame(1);
-                    player.movePlayer(0, 25);
+                    player.movePlayer(0, 50);
             }
         }
 
@@ -103,7 +103,7 @@ class GamePanel extends JPanel implements KeyListener{
                     System.out.println("left");
                     player.setMove(2);
                     player.setFrame(1);
-                    player.movePlayer(-25, 0);
+                    player.movePlayer(-50, 0);
             }
         }
 
@@ -112,7 +112,7 @@ class GamePanel extends JPanel implements KeyListener{
                     System.out.println("right");
                     player.setMove(3);
                     player.setFrame(1);
-                    player.movePlayer(25, 0);
+                    player.movePlayer(50, 0);
             }
         }
     }
