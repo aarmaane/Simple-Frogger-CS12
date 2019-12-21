@@ -26,6 +26,7 @@ public class FroggerGame extends JFrame{
     class TickListener implements ActionListener{
         public void actionPerformed(ActionEvent evt){
             if(game!= null && game.ready){
+                game.animate();
                 game.repaint();
             }
         }
@@ -47,7 +48,7 @@ class GamePanel extends JPanel implements KeyListener{
         addKeyListener(this);
         // Loading images
         try {
-            background = ImageIO.read(new File("Images/Background/Background1.gif"));
+            background = ImageIO.read(new File("Images/Background/Background1.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,7 +57,10 @@ class GamePanel extends JPanel implements KeyListener{
     }
     // Game related functions
     public void resetGame(){
-        player = new Player(300,675, "Images/Frog");
+        player = new Player(310,625, "Images/Frog");
+    }
+    public void animate(){
+        player.animate();
     }
     // All window related methods
     public void addNotify() {
@@ -78,47 +82,31 @@ class GamePanel extends JPanel implements KeyListener{
     // Keyboard related methods
     @Override
     public void keyPressed(KeyEvent e) {
-
-            if (e.getKeyCode() == KeyEvent.VK_W) {
-                if(player.getPos(Player.Y)>0) {
-                    System.out.println("up");
-                    player.setMove(0);
-                    player.setFrame(1);
-                    player.movePlayer(0, -25);
+        // Checking key presses and only accepting them if the allow the player to stay inbounds
+        if (e.getKeyCode() == KeyEvent.VK_W) {
+            if(player.getPos(Player.Y) - 50 > 0) {
+                player.jump(Player.UP, 0 ,-50);
             }
         }
-
-            else if (e.getKeyCode() == KeyEvent.VK_S) {
-                if(player.getPos(Player.Y)<gameFrame.getHeight()-100) {
-                    System.out.println(gameFrame.getWidth());
-                    System.out.println("down");
-                    player.setMove(1);
-                    player.setFrame(1);
-                    player.movePlayer(0, 25);
+        else if (e.getKeyCode() == KeyEvent.VK_S) {
+            if(player.getPos(Player.Y)<gameFrame.getHeight()-150) {
+                player.jump(Player.DOWN, 0, 50);
             }
         }
-
-            else if (e.getKeyCode() == KeyEvent.VK_A) {
-                if(player.getPos(Player.X)>0) {
-                    System.out.println("left");
-                    player.setMove(2);
-                    player.setFrame(1);
-                    player.movePlayer(-25, 0);
+        else if (e.getKeyCode() == KeyEvent.VK_A) {
+            if(player.getPos(Player.X) - 50 > 0) {
+                player.jump(Player.LEFT, -50, 0);
             }
         }
-
-            else if (e.getKeyCode() == KeyEvent.VK_D) {
-                if(player.getPos(Player.X)<gameFrame.getWidth()-100) {
-                    System.out.println("right");
-                    player.setMove(3);
-                    player.setFrame(1);
-                    player.movePlayer(25, 0);
+        else if (e.getKeyCode() == KeyEvent.VK_D) {
+            if(player.getPos(Player.X)<gameFrame.getWidth()-100) {
+                player.jump(Player.RIGHT, 50, 0);
             }
         }
     }
     @Override
     public void keyReleased(KeyEvent e) {
-        player.setFrame(0);
+       //player.setFrame(0);
     }
     @Override
     public void keyTyped(KeyEvent e) {}
