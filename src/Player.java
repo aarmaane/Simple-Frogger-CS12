@@ -2,13 +2,12 @@ import javax.imageio.*;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
-import java.nio.Buffer;
 
 
 public class Player {
     // Declaring fields
     private int[] pos = new int[2];
-    private BufferedImage[] sprites = new BufferedImage[2];
+    private Image[] sprites = new BufferedImage[2];
     // Declaring constants
     public static final int X = 0;
     public static final int Y = 1;
@@ -27,7 +26,7 @@ public class Player {
 
     }
     // Methods
-    public BufferedImage getCurrentImage(){
+    public Image getCurrentImage(){
         return sprites[0];
     }
     public int getPos(int coord) {

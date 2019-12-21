@@ -3,8 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 public class FroggerGame extends JFrame{
     private GamePanel game;
@@ -14,7 +13,7 @@ public class FroggerGame extends JFrame{
         // Creating the JPanel with GamePanel class
         game = new GamePanel(this);
         // Creating the JFrame
-        setSize(700,700);
+        setSize(680,750);
         add(game); // Adding the JPanel
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,7 +31,6 @@ public class FroggerGame extends JFrame{
         }
     }
     public static void main(String[] args){
-        System.out.println("Epic");
         FroggerGame game = new FroggerGame();
     }
 }
@@ -40,12 +38,25 @@ public class FroggerGame extends JFrame{
 class GamePanel extends JPanel implements KeyListener{
     public boolean ready = true;
     private FroggerGame gameFrame;
-    private Player player = new Player(0,0, "Images/Frog");
-    // Images
+    private Player player;
+    private Image background;
+    // Constructor for GamePanel
     public GamePanel(FroggerGame game){
         gameFrame = game;
-        setSize(700,650);
+        setSize(680,750);
         addKeyListener(this);
+        // Loading images
+        try {
+            background = ImageIO.read(new File("Images/Background/Background1.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Starting the game
+        resetGame();
+    }
+    // Game related functions
+    public void resetGame(){
+        player = new Player(0,625, "Images/Frog");
     }
     // All window related methods
     public void addNotify() {
@@ -58,40 +69,34 @@ class GamePanel extends JPanel implements KeyListener{
         ready = false;
     }
     public void paintComponent(Graphics g){
-        BufferedImage background1= null;
-        try {
-            background1 = ImageIO.read(new File("Images/Background/Background1.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        g.setColor(new Color(151, 158, 255));
+        g.setColor(new Color(0, 0, 0));
         g.fillRect(0,0,getWidth(),getHeight());
-        g.drawImage(background1,0,0,this);
-        g.drawImage(player.getCurrentImage(), player.getPos(player.X), player.getPos(player.Y),this);
+        g.drawImage(background,0,0,this);
+        g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y),this);
     }
     // Keyboard related methods
     @Override
     public void keyPressed(KeyEvent e) {
-        if(player.getPos(player.Y)>0) {
+        if(player.getPos(Player.Y)>0) {
             if (e.getKeyCode() == KeyEvent.VK_W) {
                 System.out.println("up");
                 player.movePlayer(0, -50);
             }
         }
-        if(player.getPos(player.Y)<gameFrame.getHeight()-100) {
+        if(player.getPos(Player.Y)<gameFrame.getHeight()-100) {
             if (e.getKeyCode() == KeyEvent.VK_S) {
                 System.out.println(gameFrame.getWidth());
                 System.out.println("down");
                 player.movePlayer(0, 50);
             }
         }
-        if(player.getPos(player.X)>0) {
+        if(player.getPos(Player.X)>0) {
             if (e.getKeyCode() == KeyEvent.VK_A) {
                 System.out.println("left");
                 player.movePlayer(-50, 0);
             }
         }
-        if(player.getPos(player.X)<gameFrame.getWidth()-100) {
+        if(player.getPos(Player.X)<gameFrame.getWidth()-100) {
             if (e.getKeyCode() == KeyEvent.VK_D) {
                 System.out.println("right");
                 player.movePlayer(50, 0);
