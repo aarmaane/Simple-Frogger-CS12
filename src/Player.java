@@ -8,59 +8,75 @@ import java.nio.Buffer;
 public class Player {
     // Declaring fields
     private int[] pos = new int[4];
-    private BufferedImage[][] sprites = new BufferedImage[4][3];
-    private int move,frame;
+    private Image[][] sprites = new Image[4][2];
+    private int direction;
+    private int xMove, yMove;
     private int lives;
     // Declaring constants
     public static final int X = 0;
     public static final int Y = 1;
     public static final int WIDTH = 2;
     public static final int HEIGHT = 3;
+    public static final int UP = 0;
+    public static final int RIGHT = 1;
+    public static final int DOWN = 2;
+    public static final int LEFT = 3;
     // Constructor
     public Player(int x, int y, String spritePath){
         pos[X] = x;
         pos[Y] = y;
-        move=frame=0;
-        lives=3;
+        direction = UP;
+        lives = 3;
         try{
-            sprites[0][0] = ImageIO.read(new File(spritePath + "/frog1.png"));
-            sprites[0][1] = ImageIO.read(new File(spritePath + "/frog2.png"));
-            sprites[0][2] = ImageIO.read(new File(spritePath + "/frog3.png"));
-            sprites[1][0] = ImageIO.read(new File(spritePath + "/frog4.png"));
-            sprites[1][1] = ImageIO.read(new File(spritePath + "/frog5.png"));
-            sprites[1][2] = ImageIO.read(new File(spritePath + "/frog6.png"));
-            sprites[2][0] = ImageIO.read(new File(spritePath + "/frog7.png"));
-            sprites[2][1] = ImageIO.read(new File(spritePath + "/frog8.png"));
-            sprites[2][2] = ImageIO.read(new File(spritePath + "/frog9.png"));
-            sprites[3][0] = ImageIO.read(new File(spritePath + "/frog10.png"));
-            sprites[3][1] = ImageIO.read(new File(spritePath + "/frog11.png"));
-            sprites[3][2] = ImageIO.read(new File(spritePath + "/frog12.png"));
-
+            int imageNum = 1;
+            for(int i = 0; i < 4; i++){
+                for(int f = 0; f < 2; f++){
+                    sprites[i][f] = ImageIO.read(new File(spritePath + "/frog" +imageNum + ".png"));
+                    imageNum++;
+                }
+            }
         }
         catch(IOException e){
             System.out.println("Invalid sprite path");
             System.exit(1);
         }
-        pos[WIDTH]=sprites[move][frame].getWidth();
-        pos[HEIGHT]=sprites[move][frame].getHeight();
+        pos[WIDTH]=sprites[0][0].getWidth(null);
+        pos[HEIGHT]=sprites[0][0].getHeight(null);
 
     }
     // Methods
-    public BufferedImage getCurrentImage(){
-        return sprites[move][frame];
+    public Image getCurrentImage(){
+        if(xMove != 0 || yMove != 0){
+            return sprites[direction][1];
+        }
+        return sprites[direction][0];
     }
     public int getPos(int coord) {
         return pos[coord];
     }
-    public void setMove(int move){
-        this.move=move;
-
+    public void jump(int dir, int deltaX, int deltaY){
+        if(xMove == 0 && yMove == 0) {
+            direction = dir;
+            xMove += deltaX;
+            yMove += deltaY;
+        }
     }
-    public void setFrame(int frame){
-        this.frame=frame;
-    }
-    public void movePlayer(int deltaX, int deltaY){
-        pos[X] += deltaX;
-        pos[Y] += deltaY;
+    public void animate(){
+        if(xMove != 0){
+            int negativeModifier = 1;
+            if(xMove < 0){
+                negativeModifier = -1;
+            }
+            pos[X] += 5 * negativeModifier;
+            xMove -= 5 * negativeModifier;
+        }
+        else if(yMove != 0){
+            int negativeModifier = 1;
+            if(yMove < 0){
+                negativeModifier = -1;
+            }
+            pos[Y] += 5 * negativeModifier;
+            yMove -= 5 * negativeModifier;
+        }
     }
 }
