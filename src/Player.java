@@ -1,9 +1,6 @@
 import javax.imageio.*;
 import java.awt.*;
-import java.awt.image.*;
 import java.io.*;
-import java.nio.Buffer;
-
 
 public class Player {
     // Declaring fields

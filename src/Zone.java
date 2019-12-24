@@ -1,8 +1,6 @@
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.awt.*;
+import java.io.*;
 
 public class Zone {
     public static final int DEATH = 9;
@@ -12,7 +10,7 @@ public class Zone {
     public static final int WIDTH = 2;
     public static final int HEIGHT = 3;
     private int zoneType;
-    private BufferedImage picture;
+    private Image picture;
     private int x,y,width,height;
     public Zone(int zoneType,int[]rect){
         this.zoneType=zoneType;
@@ -32,7 +30,7 @@ public class Zone {
         return (int)(Math.random()*(high-low+1)+low);
     }
     public void assignPicture() throws IOException {
-        BufferedImage[] obstacles={ ImageIO.read(new File("Images/obstacles/cars/car1.png")),
+        Image[] obstacles={ ImageIO.read(new File("Images/obstacles/cars/car1.png")),
                                     ImageIO.read(new File("Images/obstacles/cars/car2.png")),
                                     ImageIO.read(new File("Images/obstacles/cars/car3.png")),
                                     ImageIO.read(new File("Images/obstacles/cars/car4.png")),

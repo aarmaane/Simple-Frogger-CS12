@@ -2,14 +2,11 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.ArrayList;
 
 public class FroggerGame extends JFrame{
     private GamePanel game;
     private Timer myTimer;
-    public static ArrayList<Lane>lanes;
     public FroggerGame(){
         super("Frogger");
         // Creating the JPanel with GamePanel class
@@ -39,15 +36,20 @@ public class FroggerGame extends JFrame{
 }
 
 class GamePanel extends JPanel implements KeyListener{
+    // Window related Objects
     public boolean ready = true;
+    private boolean[] keysPressed;
+    // Game related Objects
     private FroggerGame gameFrame;
-    private Player player;
     private Image background;
+    private Player player;
+    private Lane[] lanes;
+    private Zone[] backgroundZones;
     // Constructor for GamePanel
     public GamePanel(FroggerGame game){
         gameFrame = game;
-        int direction;
         setSize(680,750);
+        keysPressed = new boolean[KeyEvent.KEY_LAST+1];
         addKeyListener(this);
         // Loading images
         try {
@@ -56,6 +58,7 @@ class GamePanel extends JPanel implements KeyListener{
             e.printStackTrace();
         }
         /*
+        int direction;
         for(int i=0;i<12;i++){
             if(i%2==0) direction=-1;
             else direction=1;
@@ -95,30 +98,32 @@ class GamePanel extends JPanel implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         // Checking key presses and only accepting them if the allow the player to stay inbounds
-        if (e.getKeyCode() == KeyEvent.VK_W) {
+        if (e.getKeyCode() == KeyEvent.VK_W && !keysPressed[KeyEvent.VK_W]) {
             if(player.getPos(Player.Y) - 50 > 0) {
                 player.jump(Player.UP, 0 ,-50);
             }
         }
-        else if (e.getKeyCode() == KeyEvent.VK_S) {
+        else if (e.getKeyCode() == KeyEvent.VK_S && !keysPressed[KeyEvent.VK_S]) {
             if(player.getPos(Player.Y)<gameFrame.getHeight()-150) {
                 player.jump(Player.DOWN, 0, 50);
             }
         }
-        else if (e.getKeyCode() == KeyEvent.VK_A) {
+        else if (e.getKeyCode() == KeyEvent.VK_A && !keysPressed[KeyEvent.VK_A]) {
             if(player.getPos(Player.X) - 50 > 0) {
                 player.jump(Player.LEFT, -50, 0);
             }
         }
-        else if (e.getKeyCode() == KeyEvent.VK_D) {
+        else if (e.getKeyCode() == KeyEvent.VK_D && !keysPressed[KeyEvent.VK_D]) {
             if(player.getPos(Player.X)<gameFrame.getWidth()-100) {
                 player.jump(Player.RIGHT, 50, 0);
             }
         }
+        // Keeping track of whether or not the key is pressed down
+        keysPressed[e.getKeyCode()] = true;
     }
     @Override
     public void keyReleased(KeyEvent e) {
-       //player.setFrame(0);
+       keysPressed[e.getKeyCode()] = false;
     }
     @Override
     public void keyTyped(KeyEvent e) {}
