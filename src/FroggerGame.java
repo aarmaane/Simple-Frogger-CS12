@@ -4,10 +4,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
 
 public class FroggerGame extends JFrame{
     private GamePanel game;
     private Timer myTimer;
+    public static ArrayList<Lane>lanes;
     public FroggerGame(){
         super("Frogger");
         // Creating the JPanel with GamePanel class
@@ -44,6 +46,7 @@ class GamePanel extends JPanel implements KeyListener{
     // Constructor for GamePanel
     public GamePanel(FroggerGame game){
         gameFrame = game;
+        int direction;
         setSize(680,750);
         addKeyListener(this);
         // Loading images
@@ -52,6 +55,14 @@ class GamePanel extends JPanel implements KeyListener{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        /*
+        for(int i=0;i<12;i++){
+            if(i%2==0) direction=-1;
+            else direction=1;
+            lanes.add(new Lane((getHeight()/12)*i,1,direction,zones));
+        }
+
+         */
         // Starting the game
         resetGame();
     }
@@ -68,6 +79,7 @@ class GamePanel extends JPanel implements KeyListener{
         requestFocus();
         ready = true;
     }
+
     public void removeNotify(){
         super.removeNotify();
         ready = false;
