@@ -3,8 +3,9 @@ import java.awt.*;
 import java.io.*;
 
 public class Zone {
-    public static final int DEATH = 9;
-    public static final int WALK = 10;
+    public static final int DEATH = 0;
+    public static final int WALK = 1;
+    public static final int WIN = 2;
     public static final int X = 0;
     public static final int Y = 1;
     public static final int WIDTH = 2;

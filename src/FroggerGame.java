@@ -43,8 +43,8 @@ class GamePanel extends JPanel implements KeyListener{
     private FroggerGame gameFrame;
     private Image background;
     private Player player;
-    private Lane[] lanes;
-    private Zone[] backgroundZones;
+    private Lane[] lanes = new Lane[10];
+    private Zone[] backgroundZones = new Zone[6]; // One big road zone and 5 small winning zones
     // Constructor for GamePanel
     public GamePanel(FroggerGame game){
         gameFrame = game;
@@ -72,6 +72,15 @@ class GamePanel extends JPanel implements KeyListener{
     // Game related functions
     public void resetGame(){
         player = new Player(310,625, "Images/Frog");
+        int direction;
+        for(int i=0;i<5;i++){
+            if(i%2==0) direction = Lane.LEFT;
+            else direction = Lane.RIGHT;
+            // Making the road lanes
+            lanes[i] = new Lane(375+50*i,1, direction, Zone.DEATH, "Cars/car" + (i+1) + ".png");
+            // Making the river lanes
+            lanes[i+5] = new Lane(75+50*i,1, direction, Zone.WALK, "Cars/car" + (i+1) + ".png");
+        }
     }
     public void animate(){
         player.animate();
@@ -92,6 +101,9 @@ class GamePanel extends JPanel implements KeyListener{
         g.fillRect(0,0,getWidth(),getHeight());
         g.drawImage(background,0,0,this);
         g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y),this);
+        for(Lane lane:lanes){
+            g.drawImage(lane.getSprite(),0,lane.getYPos(),this);
+        }
 
     }
     // Keyboard related methods
