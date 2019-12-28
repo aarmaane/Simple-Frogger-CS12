@@ -10,10 +10,12 @@ public class Lane {
     public static final int RIGHT = 1;
     private Zone[] zones;
     private Image sprite;
-    public Lane(int yPos,int speed,int direction, int type, String image){
+    public Lane(int yPos, int speed, int direction, int type, int zoneNum, String image, int screenLength){
         this.yPos=yPos;
         this.speed=speed;
         this.direction=direction;
+        zones = new Zone[zoneNum];
+        // Loading the sprite for each of the zones in the lane
         try{
             sprite = ImageIO.read(new File("Images/Objects/" + image));
             int largeWidth = (int)(sprite.getWidth(null)*3.125);
@@ -22,6 +24,20 @@ public class Lane {
         }
         catch(IOException e){
             e.printStackTrace();
+            System.exit(1);
+        }
+        // Creating the zones for the lane
+        for(int i = 0; i < zoneNum; i++){
+            zones[i] = new Zone(type, screenLength, i * 100, yPos, sprite.getWidth(null), 50);
+        }
+    }
+    public void animate(){
+        int directionModifier = 1;
+        if(direction == LEFT){
+            directionModifier = -1;
+        }
+        for(Zone zone:zones){
+            zone.moveX(speed * directionModifier);
         }
     }
     public int getYPos(){
@@ -29,5 +45,8 @@ public class Lane {
     }
     public Image getSprite(){
         return sprite;
+    }
+    public Zone[] getZones(){
+        return zones;
     }
 }

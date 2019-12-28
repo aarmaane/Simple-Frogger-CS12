@@ -18,7 +18,7 @@ public class FroggerGame extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         // Starting a timer to update the frames
-        myTimer = new Timer(10, new TickListener());	 // trigger every 100 ms
+        myTimer = new Timer(10, new TickListener());	 // trigger every 10 ms
         myTimer.start();
     }
     // TickListener Class
@@ -56,6 +56,7 @@ class GamePanel extends JPanel implements KeyListener{
             background = ImageIO.read(new File("Images/Background/Background1.png"));
         } catch (IOException e) {
             e.printStackTrace();
+            System.exit(1);
         }
         /*
         int direction;
@@ -74,16 +75,19 @@ class GamePanel extends JPanel implements KeyListener{
         player = new Player(310,625, "Images/Frog");
         int direction;
         for(int i=0;i<5;i++){
-            if(i%2==0) direction = Lane.LEFT;
-            else direction = Lane.RIGHT;
+            if(i%2==0) direction = Lane.RIGHT;
+            else direction = Lane.LEFT;
             // Making the road lanes
-            lanes[i] = new Lane(375+50*i,1, direction, Zone.DEATH, "Cars/car" + (i+1) + ".png");
+            lanes[i] = new Lane(375+50*i,1, direction, Zone.DEATH, 3,"Cars/car" + (i+1) + ".png", this.getWidth());
             // Making the river lanes
-            lanes[i+5] = new Lane(75+50*i,1, direction, Zone.WALK, "Cars/car" + (i+1) + ".png");
+            lanes[i+5] = new Lane(75+50*i,1, direction, Zone.WALK, 3,"Cars/car" + (i+1) + ".png", this.getWidth());
         }
     }
     public void animate(){
         player.animate();
+        for(Lane lane:lanes){
+            lane.animate();
+        }
     }
     // All window related methods
     public void addNotify() {
@@ -101,8 +105,11 @@ class GamePanel extends JPanel implements KeyListener{
         g.fillRect(0,0,getWidth(),getHeight());
         g.drawImage(background,0,0,this);
         g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y),this);
+        // Drawing all of the objects in each lane
         for(Lane lane:lanes){
-            g.drawImage(lane.getSprite(),0,lane.getYPos(),this);
+            for(Zone zone: lane.getZones()){
+                g.drawImage(lane.getSprite(), zone.getX(), zone.getY(), this);
+            }
         }
 
     }

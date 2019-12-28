@@ -12,14 +12,37 @@ public class Zone {
     public static final int HEIGHT = 3;
     private int zoneType;
     private Image picture;
-    private int x,y,width,height;
-    public Zone(int zoneType,int[]rect){
+    private int[] zoneRect = new int[4];
+    private int screenLength;
+    public Zone(int zoneType, int screenLength, int x, int y, int width, int height){
         this.zoneType=zoneType;
-        x=rect[X];
-        y=rect[Y];
-        width=rect[WIDTH];
-        height=rect[HEIGHT];
-
+        zoneRect[X] = x;
+        zoneRect[Y] = y;
+        zoneRect[WIDTH] = width;
+        zoneRect[HEIGHT] = height;
+        this.screenLength = screenLength;
+    }
+    public void moveX(int deltaX){
+        // If statements to check to see if the zone needs to be moved to the other side of the screen
+        zoneRect[X] += deltaX;
+        if(zoneRect[X] + deltaX > screenLength){
+            // Shifting the zone to the right of the window
+            zoneRect[X] += deltaX - (screenLength + zoneRect[WIDTH]);
+        }
+        else if(zoneRect[X] + deltaX < -zoneRect[WIDTH]){
+            // Shifting the zone to the left of the window
+            zoneRect[X] = screenLength;
+        }
+        else{
+            // Moving the zone normally
+            zoneRect[X] += deltaX;
+        }
+    }
+    public int getX(){
+        return zoneRect[X];
+    }
+    public int getY(){
+        return zoneRect[Y];
     }
     public boolean isSafe(){
         if(zoneType==DEATH){
@@ -27,6 +50,7 @@ public class Zone {
         }
         return true;
     }
+    /*
     public static int randint(int low, int high){
         return (int)(Math.random()*(high-low+1)+low);
     }
@@ -40,4 +64,5 @@ public class Zone {
 
 
     }
+     */
 }
