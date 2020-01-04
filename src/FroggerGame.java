@@ -26,6 +26,7 @@ public class FroggerGame extends JFrame{
         public void actionPerformed(ActionEvent evt){
             if(game!= null && game.ready){
                 game.animate();
+                game.checkCollisions();
                 game.repaint();
             }
         }
@@ -75,10 +76,10 @@ class GamePanel extends JPanel implements KeyListener{
         player = new Player(310,625, "Images/Frog");
         int direction;
         for(int i=0;i<5;i++){
-            if(i%2==0) direction = Lane.RIGHT;
-            else direction = Lane.LEFT;
+            if(i%2==0) direction = Lane.LEFT;
+            else direction = Lane.RIGHT;
             // Making the road lanes
-            lanes[i] = new Lane(375+50*i,1, direction, Zone.DEATH, 3,"Cars/car" + (i+1) + ".png", this.getWidth());
+            lanes[i] = new Lane(375+50*i,1, direction, Zone.DEATH, randint(0,3),"Cars/car" + (i+1) + ".png", this.getWidth());
             // Making the river lanes
             lanes[i+5] = new Lane(75+50*i,1, direction, Zone.WALK, 3,"Cars/car" + (i+1) + ".png", this.getWidth());
         }
@@ -87,6 +88,26 @@ class GamePanel extends JPanel implements KeyListener{
         player.animate();
         for(Lane lane:lanes){
             lane.animate();
+        }
+    }
+    public void checkCollisions(){
+        boolean laneCollided = false;
+        for(Lane lane:lanes){
+            for(Zone zone: lane.getZones()){
+                if(player.zoneCollide(zone)){
+                    laneCollided = true;
+                    if(!zone.isSafe()){
+                        System.out.println("dead");
+                    }
+                }
+            }
+        }
+        if(!laneCollided){
+            for(Zone zone: backgroundZones){
+                if(player.zoneCollide(zone) && !zone.isSafe()){
+                    System.out.println("dead in river");
+                }
+            }
         }
     }
     // All window related methods
@@ -146,4 +167,9 @@ class GamePanel extends JPanel implements KeyListener{
     }
     @Override
     public void keyTyped(KeyEvent e) {}
+    // Extra helper functions
+    public static int randint(int low, int high){
+        return (int)(Math.random()*(high-low+1)+low);
+    }
+
 }

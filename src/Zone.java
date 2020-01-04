@@ -50,19 +50,4 @@ public class Zone {
         }
         return true;
     }
-    /*
-    public static int randint(int low, int high){
-        return (int)(Math.random()*(high-low+1)+low);
-    }
-    public void assignPicture() throws IOException {
-        Image[] obstacles={ ImageIO.read(new File("Images/obstacles/cars/car1.png")),
-                                    ImageIO.read(new File("Images/obstacles/cars/car2.png")),
-                                    ImageIO.read(new File("Images/obstacles/cars/car3.png")),
-                                    ImageIO.read(new File("Images/obstacles/cars/car4.png")),
-                                    ImageIO.read(new File("Images/obstacles/cars/car5.png")) };
-        picture=obstacles[randint(0,obstacles.length-1)];
-
-
-    }
-     */
 }

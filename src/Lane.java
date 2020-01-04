@@ -28,7 +28,7 @@ public class Lane {
         }
         // Creating the zones for the lane
         for(int i = 0; i < zoneNum; i++){
-            zones[i] = new Zone(type, screenLength, i * 100, yPos, sprite.getWidth(null), 50);
+            zones[i] = new Zone(type, screenLength, i * (randint(0,3)*100), yPos, sprite.getWidth(null), 50);
         }
     }
     public void animate(){
@@ -48,5 +48,9 @@ public class Lane {
     }
     public Zone[] getZones(){
         return zones;
+    }
+    // Extra helper methods
+    public static int randint(int low, int high){
+        return (int)(Math.random()*(high-low+1)+low);
     }
 }

@@ -76,4 +76,7 @@ public class Player {
             yMove -= 5 * negativeModifier;
         }
     }
+    public boolean zoneCollide(Zone targetZone){
+        return false;
+    }
 }
