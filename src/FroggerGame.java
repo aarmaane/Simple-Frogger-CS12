@@ -100,6 +100,10 @@ class GamePanel extends JPanel implements KeyListener{
 
                     if(!zone.isSafe()){
                         System.out.println("dead");
+                        if(player.getLives()>0) {
+                            player.kill();
+                            player.setPos(310,625);
+                        }
                     }
                 }
             }

@@ -83,7 +83,7 @@ public class Player {
         }
 
         // If one rectangle is above other
-        if (pos[Y] < zoneRect[Y]+zoneRect[HEIGHT] || zoneRect[Y] < pos[Y]+pos[HEIGHT]) {
+        else if (pos[Y] > zoneRect[Y]+zoneRect[HEIGHT] || zoneRect[Y] > pos[Y]+pos[HEIGHT]) {
             return false;
         }
 
@@ -92,5 +92,15 @@ public class Player {
 
     public boolean zoneCollide(Zone targetZone){
         return doOverlap(targetZone.getZoneRect());
+    }
+    public int getLives(){
+        return lives;
+    }
+    public void kill(){
+        lives--;
+    }
+    public void setPos(int x,int y){
+        pos[X]=x;
+        pos[Y]=y;
     }
 }
