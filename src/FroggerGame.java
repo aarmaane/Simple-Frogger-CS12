@@ -94,14 +94,17 @@ class GamePanel extends JPanel implements KeyListener{
         boolean laneCollided = false;
         for(Lane lane:lanes){
             for(Zone zone: lane.getZones()){
+               // System.out.println(zone.getZoneRect()[0]+" "+zone.getZoneRect()[1]+" "+player.getPos(player.X)+" "+player.getPos(player.Y));
                 if(player.zoneCollide(zone)){
                     laneCollided = true;
+
                     if(!zone.isSafe()){
                         System.out.println("dead");
                     }
                 }
             }
         }
+        /*
         if(!laneCollided){
             for(Zone zone: backgroundZones){
                 if(player.zoneCollide(zone) && !zone.isSafe()){
@@ -109,6 +112,7 @@ class GamePanel extends JPanel implements KeyListener{
                 }
             }
         }
+        */
     }
     // All window related methods
     public void addNotify() {

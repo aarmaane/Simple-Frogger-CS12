@@ -50,4 +50,7 @@ public class Zone {
         }
         return true;
     }
+    public int[] getZoneRect(){
+        return zoneRect;
+    }
 }

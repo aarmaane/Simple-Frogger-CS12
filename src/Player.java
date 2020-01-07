@@ -76,7 +76,21 @@ public class Player {
             yMove -= 5 * negativeModifier;
         }
     }
+    public boolean doOverlap(int[]zoneRect) {
+        // If one rectangle is on left side of other
+        if (pos[X] > zoneRect[X]+zoneRect[WIDTH] || zoneRect[X] > pos[X]+pos[WIDTH]) {
+            return false;
+        }
+
+        // If one rectangle is above other
+        if (pos[Y] < zoneRect[Y]+zoneRect[HEIGHT] || zoneRect[Y] < pos[Y]+pos[HEIGHT]) {
+            return false;
+        }
+
+        return true;
+    }
+
     public boolean zoneCollide(Zone targetZone){
-        return false;
+        return doOverlap(targetZone.getZoneRect());
     }
 }
