@@ -78,12 +78,13 @@ public class Player {
     }
     public boolean doOverlap(int[]zoneRect) {
         // If one rectangle is on left side of other
-        if (pos[X] >= zoneRect[X]+zoneRect[WIDTH] || zoneRect[X] >= pos[X]+pos[WIDTH]) {
+        int[] hitBox = {pos[X]+4,pos[Y]+5,pos[WIDTH],pos[HEIGHT]};
+        if (hitBox[X] >= zoneRect[X]+zoneRect[WIDTH] || zoneRect[X] >= hitBox[X]+hitBox[WIDTH]) {
             return false;
         }
 
         // If one rectangle is above other
-        else if (pos[Y] >= zoneRect[Y]+zoneRect[HEIGHT] || zoneRect[Y] >= pos[Y]+pos[HEIGHT]) {
+        else if (hitBox[Y] >= zoneRect[Y]+zoneRect[HEIGHT] || zoneRect[Y] >= hitBox[Y]+hitBox[HEIGHT]) {
             return false;
         }
 

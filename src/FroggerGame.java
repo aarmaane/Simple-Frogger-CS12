@@ -79,7 +79,7 @@ class GamePanel extends JPanel implements KeyListener{
             if(i%2==0) direction = Lane.LEFT;
             else direction = Lane.RIGHT;
             // Making the road lanes
-            lanes[i] = new Lane(375+50*i,1, direction, Zone.DEATH, randint(0,3),"Cars/car" + (i+1) + ".png", this.getWidth());
+            lanes[i] = new Lane(375+50*i,8, direction, Zone.DEATH, randint(1,2),"Cars/car" + (i+1) + ".png", this.getWidth());
             // Making the river lanes
             lanes[i+5] = new Lane(75+50*i,1, direction, Zone.WALK, 3,"Cars/car" + (i+1) + ".png", this.getWidth());
         }
@@ -138,13 +138,14 @@ class GamePanel extends JPanel implements KeyListener{
 
         g.fillRect(0,0,getWidth(),getHeight());
         g.drawImage(background,0,0,this);
-        g.drawImage(player.getCurrentImage(), player.getPos(Player.X)-4, player.getPos(Player.Y)-5,this);
+        g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y),this);
         // Drawing all of the objects in each lane
         for(Lane lane:lanes){
             for(Zone zone: lane.getZones()){
                 g.drawImage(lane.getSprite(), zone.getX(), zone.getY(), this);
             }
         }
+        /*
         //Testing
 
         g.setColor(new Color(255,255,255));
@@ -154,7 +155,7 @@ class GamePanel extends JPanel implements KeyListener{
             }
         }
         g.drawRect(player.getPos(0),player.getPos(1),player.getPos(2),player.getPos(3));
-
+*/
     }
     // Keyboard related methods
     @Override
