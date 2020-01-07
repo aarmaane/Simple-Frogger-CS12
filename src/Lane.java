@@ -18,9 +18,6 @@ public class Lane {
         // Loading the sprite for each of the zones in the lane
         try{
             sprite = ImageIO.read(new File("Images/Objects/" + image));
-            int largeWidth = (int)(sprite.getWidth(null)*3.125);
-            int largeHeight = (int)(sprite.getHeight(null)*3.125);
-            sprite = sprite.getScaledInstance(largeWidth,largeHeight,Image.SCALE_SMOOTH);
         }
         catch(IOException e){
             e.printStackTrace();

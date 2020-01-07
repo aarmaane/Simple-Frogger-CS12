@@ -19,11 +19,11 @@ public class Player {
     public static final int DOWN = 2;
     public static final int LEFT = 3;
     // Constructor
-    public Player(int x, int y, String spritePath,int lives){
+    public Player(int x, int y, String spritePath){
         pos[X] = x;
         pos[Y] = y;
         direction = UP;
-        this.lives = lives;
+        lives = 3;
         try{
             int imageNum = 1;
             for(int i = 0; i < 4; i++){
@@ -100,8 +100,13 @@ public class Player {
     public void kill(){
         lives--;
     }
-    public void setPos(int x,int y){
-        pos[X]=x;
-        pos[Y]=y;
+    public void resetLives(){
+        lives = 3;
+    }
+    public void resetPos(){
+        pos[X]=310;
+        pos[Y]=625;
+        xMove = 0;
+        yMove = 0;
     }
 }
