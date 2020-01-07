@@ -100,12 +100,16 @@ class GamePanel extends JPanel implements KeyListener{
 
                     if(!zone.isSafe()){
                         System.out.println("dead");
-                        if(player.getLives()>0) {
-                            player.kill();
+                        //if(player.getLives()>0) {
+                           // player.kill();
                             player.setPos(310,625);
-                        }
+                        //}
                     }
+
+
+
                 }
+
             }
         }
         /*
@@ -131,15 +135,25 @@ class GamePanel extends JPanel implements KeyListener{
     }
     public void paintComponent(Graphics g){
         g.setColor(new Color(0, 0, 0));
+
         g.fillRect(0,0,getWidth(),getHeight());
         g.drawImage(background,0,0,this);
-        g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y),this);
+        g.drawImage(player.getCurrentImage(), player.getPos(Player.X)-4, player.getPos(Player.Y)-5,this);
         // Drawing all of the objects in each lane
         for(Lane lane:lanes){
             for(Zone zone: lane.getZones()){
                 g.drawImage(lane.getSprite(), zone.getX(), zone.getY(), this);
             }
         }
+        //Testing
+
+        g.setColor(new Color(255,255,255));
+        for(Lane lane:lanes){
+            for(Zone zone: lane.getZones()){
+                g.drawRect(zone.getX(),zone.getY(),zone.getZoneRect()[2],zone.getZoneRect()[3]);
+            }
+        }
+        g.drawRect(player.getPos(0),player.getPos(1),player.getPos(2),player.getPos(3));
 
     }
     // Keyboard related methods

@@ -28,7 +28,7 @@ public class Lane {
         }
         // Creating the zones for the lane
         for(int i = 0; i < zoneNum; i++){
-            zones[i] = new Zone(type, screenLength, i * (randint(0,3)*100), yPos, sprite.getWidth(null), 50);
+            zones[i] = new Zone(type, screenLength, i * (randint(0,3)*100), yPos, sprite.getWidth(null), sprite.getHeight(null));
         }
     }
     public void animate(){
