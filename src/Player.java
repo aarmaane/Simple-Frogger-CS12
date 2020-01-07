@@ -37,8 +37,8 @@ public class Player {
             System.out.println("Invalid sprite path");
             System.exit(1);
         }
-        pos[WIDTH]=sprites[0][0].getWidth(null)-6;
-        pos[HEIGHT]=sprites[0][0].getHeight(null)-13;
+        pos[WIDTH]=sprites[0][0].getWidth(null);
+        pos[HEIGHT]=sprites[0][0].getHeight(null);
 
     }
     // Methods
@@ -78,7 +78,7 @@ public class Player {
     }
     public boolean doOverlap(int[]zoneRect) {
         // If one rectangle is on left side of other
-        int[] hitBox = {pos[X]+4,pos[Y]+5,pos[WIDTH],pos[HEIGHT]};
+        int[] hitBox = {pos[X]+8,pos[Y]+10,pos[WIDTH]-16,pos[HEIGHT]-20};
         if (hitBox[X] >= zoneRect[X]+zoneRect[WIDTH] || zoneRect[X] >= hitBox[X]+hitBox[WIDTH]) {
             return false;
         }
@@ -108,5 +108,13 @@ public class Player {
         pos[Y]=625;
         xMove = 0;
         yMove = 0;
+    }
+    public void moveWithLane(Lane lane){
+        if(lane.getDirection() == Lane.LEFT){
+            pos[X] -= lane.getSpeed()*2;
+        }
+        else{
+            pos[X] += lane.getSpeed()*2;
+        }
     }
 }

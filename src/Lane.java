@@ -46,6 +46,12 @@ public class Lane {
     public Zone[] getZones(){
         return zones;
     }
+    public int getSpeed(){
+        return speed;
+    }
+    public int getDirection(){
+        return direction;
+    }
     // Extra helper methods
     public static int randint(int low, int high){
         return (int)(Math.random()*(high-low+1)+low);

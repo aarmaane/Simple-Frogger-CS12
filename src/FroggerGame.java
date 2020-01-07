@@ -74,7 +74,7 @@ class GamePanel extends JPanel implements KeyListener{
             // Making the road lanes
             lanes[i] = new Lane(375+50*i,1, direction, Zone.DEATH, randint(1,3),"Cars/car" + (i+1) + ".png", this.getWidth());
             // Making the river lanes
-            lanes[i+5] = new Lane(75+50*i,1, direction, Zone.WALK, 3,"Logs/log" + randint(1,3) + ".png", this.getWidth());
+            lanes[i+5] = new Lane(75+50*i,1, direction, Zone.WALK, randint(2,3),"Logs/log" + randint(1,3) + ".png", this.getWidth());
         }
     }
     public void animate(){
@@ -84,12 +84,11 @@ class GamePanel extends JPanel implements KeyListener{
         }
     }
     public void checkCollisions(){
-        boolean laneCollided = false;
+        boolean collided = false;
         for(Lane lane:lanes){
             for(Zone zone: lane.getZones()){
-               // System.out.println(zone.getZoneRect()[0]+" "+zone.getZoneRect()[1]+" "+player.getPos(player.X)+" "+player.getPos(player.Y));
-                if(player.zoneCollide(zone)){
-                    laneCollided = true;
+                if(player.zoneCollide(zone) && !collided){
+                    collided = true;
                     if(!zone.isSafe()){
                         System.out.println("dead");
                         if(player.getLives()>0) {
@@ -100,11 +99,14 @@ class GamePanel extends JPanel implements KeyListener{
                             resetGame();
                         }
                     }
+                    else{
+                        player.moveWithLane(lane);
+                    }
                 }
             }
         }
         /*
-        if(!laneCollided){
+        if(!collided){
             for(Zone zone: winningZones){
                 if(player.zoneCollide(zone) && !zone.isSafe()){
                     System.out.println("dead in river");
@@ -135,6 +137,8 @@ class GamePanel extends JPanel implements KeyListener{
             }
         }
         g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y),this);
+        g.setColor(new Color(255,255,255));
+        g.drawRect(player.getPos(0)+8,player.getPos(1)+10,player.getPos(2)-16,player.getPos(3)-20);
 
     }
     // Keyboard related methods
