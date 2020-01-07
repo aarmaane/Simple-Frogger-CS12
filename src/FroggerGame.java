@@ -45,7 +45,7 @@ class GamePanel extends JPanel implements KeyListener{
     private Image background;
     private Player player;
     private Lane[] lanes = new Lane[10];
-    private Zone[] backgroundZones = new Zone[6]; // One big road zone and 5 small winning zones
+    private Zone[] winningZones = new Zone[6]; // One big road zone and 5 small winning zones
     // Constructor for GamePanel
     public GamePanel(FroggerGame game){
         gameFrame = game;
@@ -97,7 +97,6 @@ class GamePanel extends JPanel implements KeyListener{
                // System.out.println(zone.getZoneRect()[0]+" "+zone.getZoneRect()[1]+" "+player.getPos(player.X)+" "+player.getPos(player.Y));
                 if(player.zoneCollide(zone)){
                     laneCollided = true;
-
                     if(!zone.isSafe()){
                         System.out.println("dead");
                         if(player.getLives()>0) {
@@ -110,7 +109,7 @@ class GamePanel extends JPanel implements KeyListener{
         }
         /*
         if(!laneCollided){
-            for(Zone zone: backgroundZones){
+            for(Zone zone: winningZones){
                 if(player.zoneCollide(zone) && !zone.isSafe()){
                     System.out.println("dead in river");
                 }
