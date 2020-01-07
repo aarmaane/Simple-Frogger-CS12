@@ -7,8 +7,8 @@ public class Player {
     private int[] pos = new int[4];
     private Image[][] sprites = new Image[4][2];
     private int direction;
-    private int xMove, yMove;
     private int lives;
+    private int xMove, yMove;
     // Declaring constants
     public static final int X = 0;
     public static final int Y = 1;
@@ -19,11 +19,11 @@ public class Player {
     public static final int DOWN = 2;
     public static final int LEFT = 3;
     // Constructor
-    public Player(int x, int y, String spritePath){
+    public Player(int x, int y, String spritePath,int lives){
         pos[X] = x;
         pos[Y] = y;
         direction = UP;
-        lives = 3;
+        this.lives = lives;
         try{
             int imageNum = 1;
             for(int i = 0; i < 4; i++){

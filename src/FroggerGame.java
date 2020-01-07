@@ -44,6 +44,7 @@ class GamePanel extends JPanel implements KeyListener{
     private FroggerGame gameFrame;
     private Image background;
     private Player player;
+    private int lives=3;
     private Lane[] lanes = new Lane[10];
     private Zone[] winningZones = new Zone[6]; // One big road zone and 5 small winning zones
     // Constructor for GamePanel
@@ -73,7 +74,7 @@ class GamePanel extends JPanel implements KeyListener{
     }
     // Game related functions
     public void resetGame(){
-        player = new Player(310,625, "Images/Frog");
+        player = new Player(310,625, "Images/Frog",lives);
         int direction;
         for(int i=0;i<5;i++){
             if(i%2==0) direction = Lane.LEFT;
@@ -100,8 +101,11 @@ class GamePanel extends JPanel implements KeyListener{
                     if(!zone.isSafe()){
                         System.out.println("dead");
                         if(player.getLives()>0) {
-                            player.kill();
+                            lives--;
                             player.setPos(310,625);
+                        }
+                        else{
+                            resetGame();
                         }
                     }
                 }
