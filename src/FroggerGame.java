@@ -128,13 +128,13 @@ class GamePanel extends JPanel implements KeyListener{
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0,0,getWidth(),getHeight());
         g.drawImage(background,0,0,this);
-        g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y),this);
         // Drawing all of the objects in each lane
         for(Lane lane:lanes){
             for(Zone zone: lane.getZones()){
                 g.drawImage(lane.getSprite(), zone.getX(), zone.getY(), this);
             }
         }
+        g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y),this);
 
     }
     // Keyboard related methods
