@@ -18,7 +18,7 @@ public class FroggerGame extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         // Starting a timer to update the frames
-        myTimer = new Timer(10, new TickListener());	 // trigger every 10 ms
+        myTimer = new Timer(15, new TickListener());	 // trigger every 10 ms
         myTimer.start();
     }
     // TickListener Class
@@ -79,7 +79,7 @@ class GamePanel extends JPanel implements KeyListener{
             if(i%2==0) direction = Lane.LEFT;
             else direction = Lane.RIGHT;
             // Making the road lanes
-            lanes[i] = new Lane(375+50*i,8, direction, Zone.DEATH, randint(1,2),"Cars/car" + (i+1) + ".png", this.getWidth());
+            lanes[i] = new Lane(375+50*i,1, direction, Zone.DEATH, randint(1,3),"Cars/car" + (i+1) + ".png", this.getWidth());
             // Making the river lanes
             lanes[i+5] = new Lane(75+50*i,1, direction, Zone.WALK, 3,"Cars/car" + (i+1) + ".png", this.getWidth());
         }
@@ -100,16 +100,12 @@ class GamePanel extends JPanel implements KeyListener{
 
                     if(!zone.isSafe()){
                         System.out.println("dead");
-                        //if(player.getLives()>0) {
-                           // player.kill();
+                        if(player.getLives()>0) {
+                            player.kill();
                             player.setPos(310,625);
-                        //}
+                        }
                     }
-
-
-
                 }
-
             }
         }
         /*
@@ -135,7 +131,6 @@ class GamePanel extends JPanel implements KeyListener{
     }
     public void paintComponent(Graphics g){
         g.setColor(new Color(0, 0, 0));
-
         g.fillRect(0,0,getWidth(),getHeight());
         g.drawImage(background,0,0,this);
         g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y),this);
@@ -145,17 +140,7 @@ class GamePanel extends JPanel implements KeyListener{
                 g.drawImage(lane.getSprite(), zone.getX(), zone.getY(), this);
             }
         }
-        /*
-        //Testing
 
-        g.setColor(new Color(255,255,255));
-        for(Lane lane:lanes){
-            for(Zone zone: lane.getZones()){
-                g.drawRect(zone.getX(),zone.getY(),zone.getZoneRect()[2],zone.getZoneRect()[3]);
-            }
-        }
-        g.drawRect(player.getPos(0),player.getPos(1),player.getPos(2),player.getPos(3));
-*/
     }
     // Keyboard related methods
     @Override
