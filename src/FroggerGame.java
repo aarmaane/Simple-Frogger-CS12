@@ -74,7 +74,7 @@ class GamePanel extends JPanel implements KeyListener{
             // Making the road lanes
             lanes[i] = new Lane(375+50*i,1, direction, Zone.DEATH, randint(1,3),"Cars/car" + (i+1) + ".png", this.getWidth());
             // Making the river lanes
-            lanes[i+5] = new Lane(75+50*i,1, direction, Zone.WALK, 3,"Logs/log" + randint(1,3) + ".png", this.getWidth());
+            lanes[i+5] = new Lane(75+50*i,1, direction, Zone.WALK, randint(1,3),"Logs/log" + randint(1,3) + ".png", this.getWidth());
         }
     }
     public void animate(){
@@ -85,12 +85,11 @@ class GamePanel extends JPanel implements KeyListener{
     }
 
     public void checkCollisions(){
-        boolean laneCollided = false;
+        boolean collided = false;
         for(Lane lane:lanes){
             for(Zone zone: lane.getZones()){
-               // System.out.println(zone.getZoneRect()[0]+" "+zone.getZoneRect()[1]+" "+player.getPos(player.X)+" "+player.getPos(player.Y));
-                if(player.zoneCollide(zone)){
-                    laneCollided = true;
+                if(player.zoneCollide(zone) && !collided){
+                    collided = true;
                     if(!zone.isSafe()){
                         System.out.println("dead");
                         if(player.getLives()>0) {
@@ -101,11 +100,14 @@ class GamePanel extends JPanel implements KeyListener{
                             resetGame();
                         }
                     }
+                    else{
+                        player.moveWithLane(lane);
+                    }
                 }
 
             }
         }
-        if(player.getPos(player.Y)<325 && !laneCollided){
+        if(player.getPos(Player.Y)<325 && !collided){
             System.out.println("water");
             if(player.getLives()>0) {
                 player.kill();
@@ -132,6 +134,7 @@ class GamePanel extends JPanel implements KeyListener{
         g.fillRect(0,0,getWidth(),getHeight());
         g.drawImage(background,0,0,this);
         // Drawing all of the objects in each lane
+        g.setColor(new Color(255,255,255));
         for(Lane lane:lanes){
             for(Zone zone: lane.getZones()){
                 g.drawImage(lane.getSprite(), zone.getX(), zone.getY(), this);
@@ -139,7 +142,7 @@ class GamePanel extends JPanel implements KeyListener{
             }
         }
         g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y),this);
-        g.drawRect(player.getPos(player.X),player.getPos(player.Y),player.getPos(2),player.getPos(3));
+        g.drawRect(player.getPos(Player.X)+8,player.getPos(Player.Y)+10,player.getPos(2)-16,player.getPos(3)-20);
 
     }
     // Keyboard related methods
