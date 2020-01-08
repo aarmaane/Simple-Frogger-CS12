@@ -105,7 +105,7 @@ class GamePanel extends JPanel implements KeyListener{
 
             }
         }
-        if(player.getPos(player.Y)<325 && player.onWater(lanes)){
+        if(player.getPos(player.Y)<325 && !laneCollided){
             System.out.println("water");
             if(player.getLives()>0) {
                 player.kill();
