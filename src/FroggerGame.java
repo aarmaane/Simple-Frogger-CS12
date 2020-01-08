@@ -74,7 +74,7 @@ class GamePanel extends JPanel implements KeyListener{
             // Making the road lanes
             lanes[i] = new Lane(375+50*i,1, direction, Zone.DEATH, randint(1,3),"Cars/car" + (i+1) + ".png", this.getWidth());
             // Making the river lanes
-            lanes[i+5] = new Lane(75+50*i,1, direction, Zone.WALK, randint(2,3),"Logs/log" + randint(1,3) + ".png", this.getWidth());
+            lanes[i+5] = new Lane(75+50*i,1, direction, Zone.WALK, 3,"Logs/log" + randint(1,3) + ".png", this.getWidth());
         }
     }
     public void animate(){
@@ -83,12 +83,14 @@ class GamePanel extends JPanel implements KeyListener{
             lane.animate();
         }
     }
+
     public void checkCollisions(){
-        boolean collided = false;
+        boolean laneCollided = false;
         for(Lane lane:lanes){
             for(Zone zone: lane.getZones()){
-                if(player.zoneCollide(zone) && !collided){
-                    collided = true;
+               // System.out.println(zone.getZoneRect()[0]+" "+zone.getZoneRect()[1]+" "+player.getPos(player.X)+" "+player.getPos(player.Y));
+                if(player.zoneCollide(zone)){
+                    laneCollided = true;
                     if(!zone.isSafe()){
                         System.out.println("dead");
                         if(player.getLives()>0) {
@@ -99,21 +101,20 @@ class GamePanel extends JPanel implements KeyListener{
                             resetGame();
                         }
                     }
-                    else{
-                        player.moveWithLane(lane);
-                    }
                 }
+
             }
         }
-        /*
-        if(!collided){
-            for(Zone zone: winningZones){
-                if(player.zoneCollide(zone) && !zone.isSafe()){
-                    System.out.println("dead in river");
-                }
+        if(player.getPos(player.Y)<325 && player.onWater(lanes)){
+            System.out.println("water");
+            if(player.getLives()>0) {
+                player.kill();
+                player.resetPos();
+            }
+            else{
+                resetGame();
             }
         }
-        */
     }
     // All window related methods
     public void addNotify() {
@@ -134,11 +135,11 @@ class GamePanel extends JPanel implements KeyListener{
         for(Lane lane:lanes){
             for(Zone zone: lane.getZones()){
                 g.drawImage(lane.getSprite(), zone.getX(), zone.getY(), this);
+                g.drawRect(zone.getZoneRect()[0],zone.getZoneRect()[1],zone.getZoneRect()[2],zone.getZoneRect()[3]);
             }
         }
         g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y),this);
-        g.setColor(new Color(255,255,255));
-        g.drawRect(player.getPos(0)+8,player.getPos(1)+10,player.getPos(2)-16,player.getPos(3)-20);
+        g.drawRect(player.getPos(player.X),player.getPos(player.Y),player.getPos(2),player.getPos(3));
 
     }
     // Keyboard related methods
