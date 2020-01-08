@@ -78,16 +78,17 @@ public class Player {
     }
     public boolean doOverlap(int[]zoneRect) {
         // If one rectangle is on left side of other
-        int[] hitBox = {pos[X]+8,pos[Y]+10,pos[WIDTH]-16,pos[HEIGHT]-20};
-        if (hitBox[X] >= zoneRect[X]+zoneRect[WIDTH] || zoneRect[X] >= hitBox[X]+hitBox[WIDTH]) {
+        int[] hitBox = {pos[X]+4,pos[Y]+5,pos[WIDTH]-16,pos[HEIGHT]-20};
+        if (hitBox[X] > zoneRect[X]+zoneRect[WIDTH] || zoneRect[X] > hitBox[X]+hitBox[WIDTH]) {
+            System.out.println("here");
             return false;
         }
 
         // If one rectangle is above other
-        else if (hitBox[Y] >= zoneRect[Y]+zoneRect[HEIGHT] || zoneRect[Y] >= hitBox[Y]+hitBox[HEIGHT]) {
+        else if (hitBox[Y] > zoneRect[Y]+zoneRect[HEIGHT] || zoneRect[Y] > hitBox[Y]+hitBox[HEIGHT]) {
             return false;
         }
-
+        System.out.println("eudfjbkadfwhvebfuonqiw");
         return true;
     }
 
@@ -108,6 +109,19 @@ public class Player {
         pos[Y]=625;
         xMove = 0;
         yMove = 0;
+    }
+    public boolean onWater(Lane[] lanes){
+        boolean condition=true;
+        for(Lane lane:lanes) {
+            for (Zone zone : lane.getZones()) {
+                if(zoneCollide(zone)&& zone.isSafe()){
+                    System.out.println("log");
+                    moveWithLane(lane);
+                    condition=false;
+                }
+            }
+        }
+        return condition;
     }
     public void moveWithLane(Lane lane){
         if(lane.getDirection() == Lane.LEFT){

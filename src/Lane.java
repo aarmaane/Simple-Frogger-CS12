@@ -47,6 +47,7 @@ public class Lane {
         return zones;
     }
     public int getDirection(){ return direction;}
+    public int getSpeed(){return speed;}
     // Extra helper methods
     public static int randint(int low, int high){
         return (int)(Math.random()*(high-low+1)+low);
