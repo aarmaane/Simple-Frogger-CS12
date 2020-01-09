@@ -78,7 +78,7 @@ class GamePanel extends JPanel implements KeyListener{
             // Making the road lanes
             lanes[i] = new Lane(375+50*i,1, direction, Zone.DEATH, randint(1,3),"Cars/car" + (i+1) + ".png", this.getWidth());
             // Making the river lanes
-            lanes[i+5] = new Lane(75+50*i,1, direction, Zone.WALK, randint(1,3),"Logs/log" + randint(1,3) + ".png", this.getWidth());
+            lanes[i+5] = new Lane(75+50*i,1, direction, Zone.WALK, randint(2,3),"Logs/log" + randint(1,3) + ".png", this.getWidth());
         }
     }
     public void animate(){
@@ -158,21 +158,25 @@ class GamePanel extends JPanel implements KeyListener{
                 player.jump(Player.UP, 0 ,-50);
             }
         }
+
         else if (e.getKeyCode() == KeyEvent.VK_S && !keysPressed[KeyEvent.VK_S]) {
             if(player.getPos(Player.Y)<gameFrame.getHeight()-150) {
                 player.jump(Player.DOWN, 0, 50);
             }
         }
+
         else if (e.getKeyCode() == KeyEvent.VK_A && !keysPressed[KeyEvent.VK_A]) {
             if(player.getPos(Player.X) - 50 > 0) {
                 player.jump(Player.LEFT, -50, 0);
             }
         }
+
         else if (e.getKeyCode() == KeyEvent.VK_D && !keysPressed[KeyEvent.VK_D]) {
             if(player.getPos(Player.X)<gameFrame.getWidth()-100) {
                 player.jump(Player.RIGHT, 50, 0);
             }
         }
+
         // Keeping track of whether or not the key is pressed down
         keysPressed[e.getKeyCode()] = true;
     }
