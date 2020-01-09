@@ -114,7 +114,6 @@ public class Player {
             for (Zone zone : lane.getZones()) {
                 if(zoneCollide(zone)&& zone.isSafe()){
                     System.out.println("log");
-
                     condition=false;
                 }
             }

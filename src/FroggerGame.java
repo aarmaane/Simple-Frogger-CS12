@@ -46,6 +46,8 @@ class GamePanel extends JPanel implements KeyListener{
     private Player player;
     private Lane[] lanes = new Lane[10];
     private Zone[] winningZones = new Zone[5]; // 5 small zones that the player whens when they enter
+    private boolean[] winningOccupied = new boolean[5];
+    private Image[] winningImage = new Image[2];
     // Constructor for GamePanel
     public GamePanel(FroggerGame game){
         gameFrame = game;
@@ -55,6 +57,8 @@ class GamePanel extends JPanel implements KeyListener{
         // Loading images
         try {
             background = ImageIO.read(new File("Images/Background/Background1.png"));
+            winningImage[0] = ImageIO.read(new File("Images/Frog/frogWin1.png"));
+            winningImage[1] = ImageIO.read(new File("Images/Frog/frogWin2.png"));
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
@@ -71,6 +75,7 @@ class GamePanel extends JPanel implements KeyListener{
     public void resetGame(){
         player.resetPos();
         player.resetLives();
+        winningOccupied = new boolean[5];
         int direction;
         for(int i=0;i<5;i++){
             if(i%2==0) direction = Lane.LEFT;
@@ -110,7 +115,15 @@ class GamePanel extends JPanel implements KeyListener{
 
             }
         }
-        if(player.getPos(Player.Y)<325 && !collided){
+        for(int i = 0; i < 5; i++){
+            Zone zone = winningZones[i];
+            if(player.zoneCollide(zone) && !winningOccupied[i]){
+                winningOccupied[i] = true;
+                player.resetPos();
+                System.out.println("Won");
+            }
+        }
+        if(!collided && player.getPos(Player.Y)<325){
             if(player.getLives()>0) {
                 player.kill();
                 player.resetPos();
@@ -132,6 +145,7 @@ class GamePanel extends JPanel implements KeyListener{
         ready = false;
     }
     public void paintComponent(Graphics g){
+        // Drawing the background
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0,0,getWidth(),getHeight());
         g.drawImage(background,0,0,this);
@@ -143,10 +157,14 @@ class GamePanel extends JPanel implements KeyListener{
                 g.drawRect(zone.getZoneRect()[0],zone.getZoneRect()[1],zone.getZoneRect()[2],zone.getZoneRect()[3]);
             }
         }
+        // Drawing the player
         g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y),this);
         g.drawRect(player.getPos(Player.X)+8,player.getPos(Player.Y)+10,player.getPos(2)-16,player.getPos(3)-20);
-        for(Zone zone: winningZones){
-            g.drawRect(zone.getX(),zone.getY(),zone.getZoneRect()[2],zone.getZoneRect()[3]);
+        // Drawing the frogs to represent the winning areas the player has reached
+        for(int i = 0; i < 5; i++){
+            if(winningOccupied[i]){
+                g.drawImage(winningImage[i%2], 19 + (i*148), 27, null);
+            }
         }
     }
     // Keyboard related methods
