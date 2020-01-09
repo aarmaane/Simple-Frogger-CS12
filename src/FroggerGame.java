@@ -45,7 +45,7 @@ class GamePanel extends JPanel implements KeyListener{
     private Image background;
     private Player player;
     private Lane[] lanes = new Lane[10];
-    private Zone[] winningZones = new Zone[6]; // 5 small zones that the player whens when they enter
+    private Zone[] winningZones = new Zone[5]; // 5 small zones that the player whens when they enter
     // Constructor for GamePanel
     public GamePanel(FroggerGame game){
         gameFrame = game;
@@ -61,7 +61,9 @@ class GamePanel extends JPanel implements KeyListener{
         }
         player = new Player(310,625, "Images/Frog");
         // Making the winning zones
-
+        for(int i = 0; i < 5; i++){
+            winningZones[i] = new Zone(Zone.WIN,getWidth(),40+(i*147),40,10,10);
+        }
         // Starting the game
         resetGame();
     }
@@ -143,7 +145,9 @@ class GamePanel extends JPanel implements KeyListener{
         }
         g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y),this);
         g.drawRect(player.getPos(Player.X)+8,player.getPos(Player.Y)+10,player.getPos(2)-16,player.getPos(3)-20);
-
+        for(Zone zone: winningZones){
+            g.drawRect(zone.getX(),zone.getY(),zone.getZoneRect()[2],zone.getZoneRect()[3]);
+        }
     }
     // Keyboard related methods
     @Override
