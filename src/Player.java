@@ -122,11 +122,13 @@ public class Player {
         return condition;
     }
     public void moveWithLane(Lane lane){
-        if(lane.getDirection() == Lane.LEFT){
-            pos[X] -= lane.getSpeed()*2;
-        }
-        else{
-            pos[X] += lane.getSpeed()*2;
+        if(yMove == 0){
+            if(lane.getDirection() == Lane.LEFT){
+                pos[X] -= lane.getSpeed()*2;
+            }
+            else{
+                pos[X] += lane.getSpeed()*2;
+            }
         }
     }
 }

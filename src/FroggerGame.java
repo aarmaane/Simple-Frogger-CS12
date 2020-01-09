@@ -60,6 +60,8 @@ class GamePanel extends JPanel implements KeyListener{
             System.exit(1);
         }
         player = new Player(310,625, "Images/Frog");
+        // Making the winning zones
+
         // Starting the game
         resetGame();
     }
