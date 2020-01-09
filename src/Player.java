@@ -80,7 +80,6 @@ public class Player {
         // If one rectangle is on left side of other
         int[] hitBox = {pos[X]+4,pos[Y]+5,pos[WIDTH]-16,pos[HEIGHT]-20};
         if (hitBox[X] > zoneRect[X]+zoneRect[WIDTH] || zoneRect[X] > hitBox[X]+hitBox[WIDTH]) {
-            System.out.println("here");
             return false;
         }
 
@@ -88,7 +87,6 @@ public class Player {
         else if (hitBox[Y] > zoneRect[Y]+zoneRect[HEIGHT] || zoneRect[Y] > hitBox[Y]+hitBox[HEIGHT]) {
             return false;
         }
-        System.out.println("eudfjbkadfwhvebfuonqiw");
         return true;
     }
 

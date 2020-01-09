@@ -91,7 +91,6 @@ class GamePanel extends JPanel implements KeyListener{
                 if(player.zoneCollide(zone) && !collided){
                     collided = true;
                     if(!zone.isSafe()){
-                        System.out.println("dead");
                         if(player.getLives()>0) {
                             player.kill();
                             player.resetPos();
@@ -108,7 +107,6 @@ class GamePanel extends JPanel implements KeyListener{
             }
         }
         if(player.getPos(Player.Y)<325 && !collided){
-            System.out.println("water");
             if(player.getLives()>0) {
                 player.kill();
                 player.resetPos();
