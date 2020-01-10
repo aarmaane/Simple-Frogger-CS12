@@ -23,7 +23,7 @@ public class Player {
         pos[X] = x;
         pos[Y] = y;
         direction = UP;
-        lives = 3;
+        lives = 2;
         try{
             int imageNum = 1;
             for(int i = 0; i < 4; i++){
@@ -100,7 +100,7 @@ public class Player {
         lives--;
     }
     public void resetLives(){
-        lives = 3;
+        lives = 2;
     }
     public void resetPos(){
         pos[X]=310;

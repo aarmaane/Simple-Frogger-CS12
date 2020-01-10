@@ -45,7 +45,7 @@ class GamePanel extends JPanel implements KeyListener{
     private Image background;
     private Player player;
     private Image livePic;
-    private int speed=2;
+    private int speed=1;
     private Lane[] lanes = new Lane[10];
     private Zone[] winningZones = new Zone[5]; // 5 small zones that the player whens when they enter
     private boolean[] winningOccupied = new boolean[5];
@@ -103,7 +103,7 @@ class GamePanel extends JPanel implements KeyListener{
                 if(player.zoneCollide(zone) && !collided){
                     collided = true;
                     if(!zone.isSafe()){
-                        if(player.getLives()>1) {
+                        if(player.getLives()>0) {
                             player.kill();
                             player.resetPos();
                         }
