@@ -44,6 +44,7 @@ class GamePanel extends JPanel implements KeyListener{
     private FroggerGame gameFrame;
     private Image background;
     private Player player;
+    private Image livePic;
     private Lane[] lanes = new Lane[10];
     private Zone[] winningZones = new Zone[5]; // 5 small zones that the player whens when they enter
     private boolean[] winningOccupied = new boolean[5];
@@ -56,6 +57,7 @@ class GamePanel extends JPanel implements KeyListener{
         addKeyListener(this);
         // Loading images
         try {
+            livePic=ImageIO.read(new File("Images/Frog/frog1.png"));
             background = ImageIO.read(new File("Images/Background/Background1.png"));
             winningImage[0] = ImageIO.read(new File("Images/Frog/frogWin1.png"));
             winningImage[1] = ImageIO.read(new File("Images/Frog/frogWin2.png"));
@@ -156,6 +158,9 @@ class GamePanel extends JPanel implements KeyListener{
                 g.drawImage(lane.getSprite(), zone.getX(), zone.getY(), this);
                 g.drawRect(zone.getZoneRect()[0],zone.getZoneRect()[1],zone.getZoneRect()[2],zone.getZoneRect()[3]);
             }
+        }
+        for(int i=0;i<player.getLives();i++){
+            g.drawImage(livePic,5+50*i,670,this);
         }
         // Drawing the player
         g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y),this);
