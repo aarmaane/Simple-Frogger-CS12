@@ -148,11 +148,16 @@ class GamePanel extends JPanel implements KeyListener{
     }
     public void paintComponent(Graphics g){
         // Drawing the background
+
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0,0,getWidth(),getHeight());
         g.drawImage(background,0,0,this);
         // Drawing all of the objects in each lane
         g.setColor(new Color(255,255,255));
+        Graphics2D g2d = (Graphics2D) g;
+        Font font =new Font("Consolas",0,40);
+        g2d.setFont(font);
+        g2d.drawString("Time:"+6,300,570);
         for(Lane lane:lanes){
             for(Zone zone: lane.getZones()){
                 g.drawImage(lane.getSprite(), zone.getX(), zone.getY(), this);
