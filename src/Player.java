@@ -120,6 +120,9 @@ public class Player {
         }
         return condition;
     }
+    public void dieAnimation(){
+
+    }
     public void moveWithLane(Lane lane){
         if(yMove == 0){
             if(lane.getDirection() == Lane.LEFT){
