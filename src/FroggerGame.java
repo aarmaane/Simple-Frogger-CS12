@@ -7,6 +7,7 @@ import java.io.*;
 public class FroggerGame extends JFrame{
     private GamePanel game;
     private Timer myTimer;
+    private int runTime;
     public FroggerGame(){
         super("Frogger");
         // Creating the JPanel with GamePanel class
@@ -25,9 +26,16 @@ public class FroggerGame extends JFrame{
     class TickListener implements ActionListener{
         public void actionPerformed(ActionEvent evt){
             if(game!= null && game.ready){
+                // Main game loop
                 game.animate();
                 game.checkCollisions();
+                game.checkStatus();
                 game.repaint();
+                // Keeping track of time
+                runTime+=15;
+                if(runTime % 1005 == 0){
+                    game.iterateTime();
+                }
             }
         }
     }
@@ -42,43 +50,52 @@ class GamePanel extends JPanel implements KeyListener{
     private boolean[] keysPressed;
     // Game related Objects
     private FroggerGame gameFrame;
-    private Image background;
     private Player player;
-    private Image livePic;
-    private int speed=1;
+    private int level = 1;
+    private int time = 0;
     private Lane[] lanes = new Lane[10];
     private Zone[] winningZones = new Zone[5]; // 5 small zones that the player whens when they enter
     private boolean[] winningOccupied = new boolean[5];
+    // Game Images
+    private Image background;
     private Image[] winningImage = new Image[2];
+    private Image livePic;
+    // Game Fonts
+    private Font arcadeFont;
     // Constructor for GamePanel
     public GamePanel(FroggerGame game){
+        // Setting up the GamePanel
         gameFrame = game;
         setSize(680,750);
         keysPressed = new boolean[KeyEvent.KEY_LAST+1];
         addKeyListener(this);
-        // Loading images
         try {
+            // Loading images
             livePic=ImageIO.read(new File("Images/Frog/frog1.png"));
             background = ImageIO.read(new File("Images/Background/Background1.png"));
             winningImage[0] = ImageIO.read(new File("Images/Frog/frogWin1.png"));
             winningImage[1] = ImageIO.read(new File("Images/Frog/frogWin2.png"));
-        } catch (IOException e) {
+            // Loading font
+            arcadeFont = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/arcade.ttf"));
+            arcadeFont = arcadeFont.deriveFont(20f);
+        } catch (IOException | FontFormatException e) {
             e.printStackTrace();
             System.exit(1);
         }
-        player = new Player(310,625, "Images/Frog");
+        player = new Player(310,625, "Images/Frog"); // Making the player object
         // Making the winning zones
         for(int i = 0; i < 5; i++){
             winningZones[i] = new Zone(Zone.WIN,getWidth(),40+(i*147),40,10,10);
         }
         // Starting the game
-        resetGame(speed);
+        resetGame(level);
     }
     // Game related functions
     public void resetGame(int speed){
         player.resetPos();
         player.resetLives();
         winningOccupied = new boolean[5];
+        time = 0;
         int direction;
         for(int i=0;i<5;i++){
             if(i%2==0) direction = Lane.LEFT;
@@ -98,6 +115,7 @@ class GamePanel extends JPanel implements KeyListener{
 
     public void checkCollisions(){
         boolean collided = false;
+        // Checking collision with the Lanes
         for(Lane lane:lanes){
             for(Zone zone: lane.getZones()){
                 if(player.zoneCollide(zone) && !collided){
@@ -108,7 +126,7 @@ class GamePanel extends JPanel implements KeyListener{
                             player.resetPos();
                         }
                         else{
-                            resetGame(speed);
+                            resetGame(level);
                         }
                     }
                     else{
@@ -118,33 +136,41 @@ class GamePanel extends JPanel implements KeyListener{
 
             }
         }
+        // Checking collisions with winning zones
         for(int i = 0; i < 5; i++){
             Zone zone = winningZones[i];
             int count=0;
             if(player.zoneCollide(zone) && !winningOccupied[i]){
                 winningOccupied[i] = true;
                 player.resetPos();
-                System.out.println("Won");
+                player.addScore(150);
             }
-
-            for(boolean bool: winningOccupied){
-                if(bool) count++;
-            }
-            if(count==winningOccupied.length){
-                speed=3;
-                resetGame(speed);
-            }
-
         }
+        // Checking collision with the water (only if nothing else has been collided with
         if(!collided && player.getPos(Player.Y)<325){
             if(player.getLives()>0) {
                 player.kill();
                 player.resetPos();
             }
             else{
-                resetGame(speed);
+                resetGame(level);
             }
         }
+    }
+    public void checkStatus(){
+        // Checking if the user has won
+        int count = 0;
+        for(boolean bool: winningOccupied){
+            if(bool) count++;
+        }
+        if(count == winningOccupied.length){
+            level++;
+            resetGame(level);
+        }
+
+    }
+    public void iterateTime(){
+        time++;
     }
     // All window related methods
     public void addNotify() {
@@ -159,16 +185,11 @@ class GamePanel extends JPanel implements KeyListener{
     }
     public void paintComponent(Graphics g){
         // Drawing the background
-
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0,0,getWidth(),getHeight());
         g.drawImage(background,0,0,this);
         // Drawing all of the objects in each lane
         g.setColor(new Color(255,255,255));
-        Graphics2D g2d = (Graphics2D) g;
-        Font font =new Font("Consolas",0,35);
-        g2d.setFont(font);
-        g2d.drawString("Time:"+6,240,705);
         for(Lane lane:lanes){
             for(Zone zone: lane.getZones()){
                 g.drawImage(lane.getSprite(), zone.getX(), zone.getY(), this);
@@ -187,6 +208,11 @@ class GamePanel extends JPanel implements KeyListener{
                 g.drawImage(winningImage[i%2], 19 + (i*148), 27, null);
             }
         }
+        // Drawing text
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setFont(arcadeFont);
+        g2d.drawString("Time:" + time,530,705);
+        g2d.drawString("Score:" + player.getScore(), 250, 705);
     }
     // Keyboard related methods
     @Override
@@ -229,5 +255,4 @@ class GamePanel extends JPanel implements KeyListener{
     public static int randint(int low, int high){
         return (int)(Math.random()*(high-low+1)+low);
     }
-
 }

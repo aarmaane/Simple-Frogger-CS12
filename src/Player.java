@@ -9,6 +9,7 @@ public class Player {
     private int direction;
     private int lives;
     private int xMove, yMove;
+    private int score;
     // Declaring constants
     public static final int X = 0;
     public static final int Y = 1;
@@ -132,5 +133,11 @@ public class Player {
                 pos[X] += lane.getSpeed()*2;
             }
         }
+    }
+    public int getScore(){
+        return score;
+    }
+    public void addScore(int points){
+        score += points;
     }
 }
