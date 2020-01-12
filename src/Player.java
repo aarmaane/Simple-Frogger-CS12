@@ -5,7 +5,6 @@ import java.io.*;
 public class Player {
     // Declaring fields
     private int[] pos = new int[4];
-    private int[] deathPos = new int[2];
     private Image[][] sprites = new Image[4][2];
     private Image[] deathSprites = new Image[7];
     private int direction;
@@ -13,6 +12,7 @@ public class Player {
     private int xMove, yMove;
     private int score;
     private int status;
+    private int deathCount;
     // Declaring constants
     public static final int X = 0;
     public static final int Y = 1;
@@ -31,6 +31,7 @@ public class Player {
         direction = UP;
         status = ALIVE;
         lives = 2;
+        deathCount = 0;
         try{
             int imageNum = 1;
             for(int i = 0; i < 4; i++){
@@ -53,39 +54,45 @@ public class Player {
     }
     // Methods
     public Image getCurrentImage(){
-        if(xMove != 0 || yMove != 0){
+        if(status == DEAD){
+            return getDeathImage();
+        }
+        else if(xMove != 0 || yMove != 0){
             return sprites[direction][1];
         }
         return sprites[direction][0];
     }
-    public Image getDeathImage(int numImage){
-        if(numImage>0 &&numImage<26)
-            return deathSprites[0];
-        if(numImage>25 &&numImage<51)
-            return deathSprites[1];
-        if(numImage>50 &&numImage<76)
-            return deathSprites[2];
-        if(numImage>75 &&numImage<101)
-            return deathSprites[3];
-        return deathSprites[0];
+    public Image getDeathImage(){
+        // Seeing if we should return the water or road versions of sprites
+        int waterSpriteOffset = 0;
+        if(pos[Y] < 285){
+            waterSpriteOffset = 4;
+        }
+        // Calculating which sprite to return
+        if(deathCount>-1 && deathCount<26)
+            return deathSprites[0 + waterSpriteOffset];
+        else if(deathCount>25 && deathCount<51)
+            return deathSprites[1 + waterSpriteOffset];
+        else if(deathCount>50 && deathCount<76)
+            return deathSprites[2 + waterSpriteOffset];
+        return deathSprites[3];
     }
     public int getPos(int coord) {
         return pos[coord];
     }
-    public int getDeathPos(int coord){
-        return deathPos[coord];
-    }
     public int getStatus(){ return status;}
-    public void setStatus(int status){ this.status=status;}
     public void jump(int dir, int deltaX, int deltaY){
-        if(xMove == 0 && yMove == 0) {
+        if(xMove == 0 && yMove == 0 && status == ALIVE) {
             direction = dir;
             xMove += deltaX;
             yMove += deltaY;
         }
     }
     public void animate(){
-        if(xMove != 0){
+        if(status == DEAD){
+            deathCount += 1;
+        }
+        else if(xMove != 0){
             int negativeModifier = 1;
             if(xMove < 0){
                 negativeModifier = -1;
@@ -129,18 +136,25 @@ public class Player {
         lives = 2;
     }
     public void resetPos(){
+        status = ALIVE;
+        direction = UP;
+        deathCount = 0;
         pos[X]=310;
         pos[Y]=625;
         xMove = 0;
         yMove = 0;
     }
-    public void dieAnimation(int x,int y){
+    public void dieAnimation(){
         status=DEAD;
-        deathPos[X]=x;
-        deathPos[Y]=y;
+    }
+    public boolean isDeathDone(){
+        if(deathCount < 100){
+            return false;
+        }
+        return true;
     }
     public void moveWithLane(Lane lane){
-        if(yMove == 0){
+        if(yMove == 0 && status == ALIVE){
             if(lane.getDirection() == Lane.LEFT){
                 pos[X] -= lane.getSpeed()*2;
             }

@@ -52,10 +52,8 @@ class GamePanel extends JPanel implements KeyListener{
     private FroggerGame gameFrame;
     private Player player;
     private int level = 1;
-    private int deathSpriteCount=0;
     private int time = 30;
     private Lane[] lanes = new Lane[10];
-    private boolean pauseMove=false;
     private Zone[] winningZones = new Zone[5]; // 5 small zones that the player whens when they enter
     private boolean[] winningOccupied = new boolean[5];
     // Game Images
@@ -124,15 +122,7 @@ class GamePanel extends JPanel implements KeyListener{
                 if(player.zoneCollide(zone) && !collided){
                     collided = true;
                     if(!zone.isSafe()){
-                        if(player.getLives()>0) {
-                            player.kill();
-                            player.dieAnimation(player.getPos(Player.X),player.getPos(Player.Y));
-                            player.resetPos();
-
-                        }
-                        else{
-                            resetGame(level);
-                        }
+                        player.dieAnimation();
                     }
                     else{
                         player.moveWithLane(lane);
@@ -144,7 +134,6 @@ class GamePanel extends JPanel implements KeyListener{
         // Checking collisions with winning zones
         for(int i = 0; i < 5; i++){
             Zone zone = winningZones[i];
-            int count=0;
             if(player.zoneCollide(zone) && !winningOccupied[i]){
                 winningOccupied[i] = true;
                 player.resetPos();
@@ -153,16 +142,8 @@ class GamePanel extends JPanel implements KeyListener{
             }
         }
         // Checking collision with the water (only if nothing else has been collided with
-        if(!collided && player.getPos(Player.Y)<325){
-            if(player.getLives()>0) {
-                player.kill();
-                player.dieAnimation(player.getPos(Player.X),player.getPos(Player.Y));
-                player.resetPos();
-
-            }
-            else{
-                resetGame(level);
-            }
+        if(!collided && player.getPos(Player.Y)<285){
+            player.dieAnimation();
         }
     }
     public void checkStatus(){
@@ -175,7 +156,16 @@ class GamePanel extends JPanel implements KeyListener{
             level++;
             resetGame(level);
         }
-
+        // Checking if the death animation is done
+        if(player.getStatus() == Player.DEAD && player.isDeathDone()){
+            if(player.getLives() > 0){
+                player.kill();
+                player.resetPos();
+            }
+            else{
+                resetGame(level);
+            }
+        }
     }
     public void iterateTime(){
         if(time>0) {
@@ -217,21 +207,7 @@ class GamePanel extends JPanel implements KeyListener{
             g.drawImage(livePic,50*i,670,this);
         }
         // Drawing the player
-        if(player.getStatus()==1) {
-            g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y), this);
-        }
-        else{
-            deathSpriteCount++;
-            pauseMove=true;
-            g.drawImage(player.getDeathImage(deathSpriteCount), player.getDeathPos(Player.X), player.getDeathPos(Player.Y), this);
-            if(deathSpriteCount==100){
-                player.setStatus(1);
-                deathSpriteCount=0;
-                player.resetPos();
-                pauseMove=false;
-
-            }
-        }
+        g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y), this);
         g.drawRect(player.getPos(Player.X)+8,player.getPos(Player.Y)+10,player.getPos(2)-16,player.getPos(3)-20);
         g.fillRect(100+7*(60-time),685,7*time,25);
         // Drawing the frogs to represent the winning areas the player has reached
@@ -250,26 +226,23 @@ class GamePanel extends JPanel implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         // Checking key presses and only accepting them if the allow the player to stay inbounds
-        if(!pauseMove) {
-            if (e.getKeyCode() == KeyEvent.VK_W && !keysPressed[KeyEvent.VK_W]) {
-                if (player.getPos(Player.Y) - 50 > 0) {
-                    player.jump(Player.UP, 0, -50);
-                }
-            } else if (e.getKeyCode() == KeyEvent.VK_S && !keysPressed[KeyEvent.VK_S]) {
-                if (player.getPos(Player.Y) < gameFrame.getHeight() - 150) {
-                    player.jump(Player.DOWN, 0, 50);
-                }
-            } else if (e.getKeyCode() == KeyEvent.VK_A && !keysPressed[KeyEvent.VK_A]) {
-                if (player.getPos(Player.X) - 50 > 0) {
-                    player.jump(Player.LEFT, -50, 0);
-                }
-            } else if (e.getKeyCode() == KeyEvent.VK_D && !keysPressed[KeyEvent.VK_D]) {
-                if (player.getPos(Player.X) < gameFrame.getWidth() - 100) {
-                    player.jump(Player.RIGHT, 50, 0);
-                }
+        if (e.getKeyCode() == KeyEvent.VK_W && !keysPressed[KeyEvent.VK_W]) {
+            if (player.getPos(Player.Y) - 50 > 0) {
+                player.jump(Player.UP, 0, -50);
+            }
+        } else if (e.getKeyCode() == KeyEvent.VK_S && !keysPressed[KeyEvent.VK_S]) {
+            if (player.getPos(Player.Y) < gameFrame.getHeight() - 150) {
+                player.jump(Player.DOWN, 0, 50);
+            }
+        } else if (e.getKeyCode() == KeyEvent.VK_A && !keysPressed[KeyEvent.VK_A]) {
+            if (player.getPos(Player.X) - 50 > 0) {
+                player.jump(Player.LEFT, -50, 0);
+            }
+        } else if (e.getKeyCode() == KeyEvent.VK_D && !keysPressed[KeyEvent.VK_D]) {
+            if (player.getPos(Player.X) < gameFrame.getWidth() - 100) {
+                player.jump(Player.RIGHT, 50, 0);
             }
         }
-
         // Keeping track of whether or not the key is pressed down
         keysPressed[e.getKeyCode()] = true;
     }
