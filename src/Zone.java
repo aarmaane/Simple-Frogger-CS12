@@ -24,7 +24,6 @@ public class Zone {
     }
     public void moveX(int deltaX){
         // If statements to check to see if the zone needs to be moved to the other side of the screen
-        zoneRect[X] += deltaX;
         if(zoneRect[X] + deltaX > screenLength){
             // Shifting the zone to the right of the window
             zoneRect[X] += deltaX - (screenLength + zoneRect[WIDTH]);

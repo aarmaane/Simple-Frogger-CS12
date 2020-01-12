@@ -156,10 +156,10 @@ public class Player {
     public void moveWithLane(Lane lane){
         if(yMove == 0 && status == ALIVE){
             if(lane.getDirection() == Lane.LEFT){
-                pos[X] -= lane.getSpeed()*2;
+                pos[X] -= lane.getSpeed();
             }
             else{
-                pos[X] += lane.getSpeed()*2;
+                pos[X] += lane.getSpeed();
             }
         }
     }
