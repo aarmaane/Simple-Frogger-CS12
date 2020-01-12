@@ -52,7 +52,8 @@ class GamePanel extends JPanel implements KeyListener{
     private FroggerGame gameFrame;
     private Player player;
     private int level = 1;
-    private int time = 0;
+    private int deathSpriteCount=0;
+    private int time = 30;
     private Lane[] lanes = new Lane[10];
     private Zone[] winningZones = new Zone[5]; // 5 small zones that the player whens when they enter
     private boolean[] winningOccupied = new boolean[5];
@@ -94,8 +95,9 @@ class GamePanel extends JPanel implements KeyListener{
     public void resetGame(int speed){
         player.resetPos();
         player.resetLives();
+        player.resetScore();
         winningOccupied = new boolean[5];
-        time = 0;
+        time = 30;
         int direction;
         for(int i=0;i<5;i++){
             if(i%2==0) direction = Lane.LEFT;
@@ -123,7 +125,9 @@ class GamePanel extends JPanel implements KeyListener{
                     if(!zone.isSafe()){
                         if(player.getLives()>0) {
                             player.kill();
+                            player.dieAnimation(player.getPos(Player.X),player.getPos(Player.Y));
                             player.resetPos();
+
                         }
                         else{
                             resetGame(level);
@@ -144,13 +148,16 @@ class GamePanel extends JPanel implements KeyListener{
                 winningOccupied[i] = true;
                 player.resetPos();
                 player.addScore(150);
+                resetTime();
             }
         }
         // Checking collision with the water (only if nothing else has been collided with
         if(!collided && player.getPos(Player.Y)<325){
             if(player.getLives()>0) {
                 player.kill();
+                player.dieAnimation(player.getPos(Player.X),player.getPos(Player.Y));
                 player.resetPos();
+
             }
             else{
                 resetGame(level);
@@ -170,7 +177,16 @@ class GamePanel extends JPanel implements KeyListener{
 
     }
     public void iterateTime(){
-        time++;
+        if(time>0) {
+            time--;
+        }
+        else{
+            resetGame(level);
+        }
+
+    }
+    public void resetTime(){
+        time=30;
     }
     // All window related methods
     public void addNotify() {
@@ -197,11 +213,23 @@ class GamePanel extends JPanel implements KeyListener{
             }
         }
         for(int i=0;i<player.getLives();i++){
-            g.drawImage(livePic,5+50*i,670,this);
+            g.drawImage(livePic,50*i,670,this);
         }
         // Drawing the player
-        g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y),this);
+        if(player.getStatus()==1) {
+            g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y), this);
+        }
+        else{
+            deathSpriteCount++;
+            g.drawImage(player.getDeathImage(deathSpriteCount), player.getDeathPos(Player.X), player.getDeathPos(Player.Y), this);
+            if(deathSpriteCount==100){
+                player.setStatus(1);
+                deathSpriteCount=0;
+                player.resetPos();
+            }
+        }
         g.drawRect(player.getPos(Player.X)+8,player.getPos(Player.Y)+10,player.getPos(2)-16,player.getPos(3)-20);
+        g.fillRect(100+7*(60-time),685,7*time,25);
         // Drawing the frogs to represent the winning areas the player has reached
         for(int i = 0; i < 5; i++){
             if(winningOccupied[i]){
@@ -212,7 +240,7 @@ class GamePanel extends JPanel implements KeyListener{
         Graphics2D g2d = (Graphics2D) g;
         g2d.setFont(arcadeFont);
         g2d.drawString("Time:" + time,530,705);
-        g2d.drawString("Score:" + player.getScore(), 250, 705);
+        g2d.drawString("Score:" + player.getScore(), 105, 705);
     }
     // Keyboard related methods
     @Override

@@ -5,11 +5,14 @@ import java.io.*;
 public class Player {
     // Declaring fields
     private int[] pos = new int[4];
+    private int[] deathPos = new int[2];
     private Image[][] sprites = new Image[4][2];
+    private Image[] deathSprites = new Image[4];
     private int direction;
     private int lives;
     private int xMove, yMove;
     private int score;
+    private int status;
     // Declaring constants
     public static final int X = 0;
     public static final int Y = 1;
@@ -19,11 +22,14 @@ public class Player {
     public static final int RIGHT = 1;
     public static final int DOWN = 2;
     public static final int LEFT = 3;
+    public static final int DEAD = 0;
+    public static final int ALIVE = 1;
     // Constructor
     public Player(int x, int y, String spritePath){
         pos[X] = x;
         pos[Y] = y;
         direction = UP;
+        status = ALIVE;
         lives = 2;
         try{
             int imageNum = 1;
@@ -32,6 +38,7 @@ public class Player {
                     sprites[i][f] = ImageIO.read(new File(spritePath + "/frog" +imageNum + ".png"));
                     imageNum++;
                 }
+                deathSprites[i] = ImageIO.read(new File("Images/Frog/death"+(i+1)+".png"));
             }
         }
         catch(IOException e){
@@ -49,9 +56,25 @@ public class Player {
         }
         return sprites[direction][0];
     }
+    public Image getDeathImage(int numImage){
+        if(numImage>0 &&numImage<26)
+            return deathSprites[0];
+        if(numImage>25 &&numImage<51)
+            return deathSprites[1];
+        if(numImage>50 &&numImage<76)
+            return deathSprites[2];
+        if(numImage>75 &&numImage<101)
+            return deathSprites[3];
+        return deathSprites[0];
+    }
     public int getPos(int coord) {
         return pos[coord];
     }
+    public int getDeathPos(int coord){
+        return deathPos[coord];
+    }
+    public int getStatus(){ return status;}
+    public void setStatus(int status){ this.status=status;}
     public void jump(int dir, int deltaX, int deltaY){
         if(xMove == 0 && yMove == 0) {
             direction = dir;
@@ -109,20 +132,10 @@ public class Player {
         xMove = 0;
         yMove = 0;
     }
-    public boolean onWater(Lane[] lanes){
-        boolean condition=true;
-        for(Lane lane:lanes) {
-            for (Zone zone : lane.getZones()) {
-                if(zoneCollide(zone)&& zone.isSafe()){
-                    System.out.println("log");
-                    condition=false;
-                }
-            }
-        }
-        return condition;
-    }
-    public void dieAnimation(){
-
+    public void dieAnimation(int x,int y){
+        status=DEAD;
+        deathPos[X]=x;
+        deathPos[Y]=y;
     }
     public void moveWithLane(Lane lane){
         if(yMove == 0){
@@ -139,5 +152,8 @@ public class Player {
     }
     public void addScore(int points){
         score += points;
+    }
+    public void resetScore(){
+        score=0;
     }
 }
