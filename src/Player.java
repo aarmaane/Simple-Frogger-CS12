@@ -7,7 +7,7 @@ public class Player {
     private int[] pos = new int[4];
     private int[] deathPos = new int[2];
     private Image[][] sprites = new Image[4][2];
-    private Image[] deathSprites = new Image[4];
+    private Image[] deathSprites = new Image[7];
     private int direction;
     private int lives;
     private int xMove, yMove;
@@ -37,7 +37,9 @@ public class Player {
                 for(int f = 0; f < 2; f++){
                     sprites[i][f] = ImageIO.read(new File(spritePath + "/frog" +imageNum + ".png"));
                     imageNum++;
-                }
+                };
+            }
+            for(int i=0;i<7;i++){
                 deathSprites[i] = ImageIO.read(new File("Images/Frog/death"+(i+1)+".png"));
             }
         }

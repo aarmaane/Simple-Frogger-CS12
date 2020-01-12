@@ -55,6 +55,7 @@ class GamePanel extends JPanel implements KeyListener{
     private int deathSpriteCount=0;
     private int time = 30;
     private Lane[] lanes = new Lane[10];
+    private boolean pauseMove=false;
     private Zone[] winningZones = new Zone[5]; // 5 small zones that the player whens when they enter
     private boolean[] winningOccupied = new boolean[5];
     // Game Images
@@ -221,11 +222,14 @@ class GamePanel extends JPanel implements KeyListener{
         }
         else{
             deathSpriteCount++;
+            pauseMove=true;
             g.drawImage(player.getDeathImage(deathSpriteCount), player.getDeathPos(Player.X), player.getDeathPos(Player.Y), this);
             if(deathSpriteCount==100){
                 player.setStatus(1);
                 deathSpriteCount=0;
                 player.resetPos();
+                pauseMove=false;
+
             }
         }
         g.drawRect(player.getPos(Player.X)+8,player.getPos(Player.Y)+10,player.getPos(2)-16,player.getPos(3)-20);
@@ -246,27 +250,23 @@ class GamePanel extends JPanel implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         // Checking key presses and only accepting them if the allow the player to stay inbounds
-        if (e.getKeyCode() == KeyEvent.VK_W && !keysPressed[KeyEvent.VK_W]) {
-            if(player.getPos(Player.Y) - 50 > 0) {
-                player.jump(Player.UP, 0 ,-50);
-            }
-        }
-
-        else if (e.getKeyCode() == KeyEvent.VK_S && !keysPressed[KeyEvent.VK_S]) {
-            if(player.getPos(Player.Y)<gameFrame.getHeight()-150) {
-                player.jump(Player.DOWN, 0, 50);
-            }
-        }
-
-        else if (e.getKeyCode() == KeyEvent.VK_A && !keysPressed[KeyEvent.VK_A]) {
-            if(player.getPos(Player.X) - 50 > 0) {
-                player.jump(Player.LEFT, -50, 0);
-            }
-        }
-
-        else if (e.getKeyCode() == KeyEvent.VK_D && !keysPressed[KeyEvent.VK_D]) {
-            if(player.getPos(Player.X)<gameFrame.getWidth()-100) {
-                player.jump(Player.RIGHT, 50, 0);
+        if(!pauseMove) {
+            if (e.getKeyCode() == KeyEvent.VK_W && !keysPressed[KeyEvent.VK_W]) {
+                if (player.getPos(Player.Y) - 50 > 0) {
+                    player.jump(Player.UP, 0, -50);
+                }
+            } else if (e.getKeyCode() == KeyEvent.VK_S && !keysPressed[KeyEvent.VK_S]) {
+                if (player.getPos(Player.Y) < gameFrame.getHeight() - 150) {
+                    player.jump(Player.DOWN, 0, 50);
+                }
+            } else if (e.getKeyCode() == KeyEvent.VK_A && !keysPressed[KeyEvent.VK_A]) {
+                if (player.getPos(Player.X) - 50 > 0) {
+                    player.jump(Player.LEFT, -50, 0);
+                }
+            } else if (e.getKeyCode() == KeyEvent.VK_D && !keysPressed[KeyEvent.VK_D]) {
+                if (player.getPos(Player.X) < gameFrame.getWidth() - 100) {
+                    player.jump(Player.RIGHT, 50, 0);
+                }
             }
         }
 
