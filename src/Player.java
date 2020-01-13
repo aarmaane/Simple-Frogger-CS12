@@ -9,6 +9,7 @@ public class Player {
     private Image[] deathSprites = new Image[7];
     private int direction;
     private int lives;
+    private int highestLane;
     private int xMove, yMove;
     private int score;
     private int status;
@@ -29,6 +30,7 @@ public class Player {
         pos[X] = x;
         pos[Y] = y;
         direction = UP;
+        highestLane=y;
         status = ALIVE;
         lives = 2;
         deathCount = 0;
@@ -86,6 +88,11 @@ public class Player {
             direction = dir;
             xMove += deltaX;
             yMove += deltaY;
+            if(direction==UP && pos[Y]==highestLane){
+                highestLane-=50;
+                score+=10;
+
+            }
         }
     }
     public void animate(){
@@ -137,6 +144,7 @@ public class Player {
     }
     public void resetPos(){
         status = ALIVE;
+        highestLane=625;
         direction = UP;
         deathCount = 0;
         pos[X]=310;
