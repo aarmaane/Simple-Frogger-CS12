@@ -94,7 +94,6 @@ class GamePanel extends JPanel implements KeyListener{
     public void resetGame(int speed){
         player.resetPos();
         player.resetLives();
-        player.resetScore();
         winningOccupied = new boolean[5];
         time = 30;
         int direction;
@@ -138,6 +137,7 @@ class GamePanel extends JPanel implements KeyListener{
                 winningOccupied[i] = true;
                 player.resetPos();
                 player.addScore(150);
+                player.resetLaneScoring();
                 resetTime();
             }
         }
@@ -163,7 +163,9 @@ class GamePanel extends JPanel implements KeyListener{
                 player.resetPos();
             }
             else{
+                level = 1;
                 resetGame(level);
+                player.resetScore();
             }
         }
     }

@@ -144,7 +144,6 @@ public class Player {
     }
     public void resetPos(){
         status = ALIVE;
-        highestLane=625;
         direction = UP;
         deathCount = 0;
         pos[X]=310;
@@ -179,5 +178,9 @@ public class Player {
     }
     public void resetScore(){
         score=0;
+        resetLaneScoring();
+    }
+    public void resetLaneScoring(){
+        highestLane=625;
     }
 }
