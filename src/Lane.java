@@ -26,7 +26,7 @@ public class Lane {
             System.exit(1);
         }
         // Creating the zones for the lane
-        int spacing=(screenLength/zoneNum)/sprite.getWidth(null);
+        int spacing=screenLength/zoneNum;
         //i*sprite.getWidth()
         for(int i = 0; i < zoneNum; i++){
             if(equallySpaced) {
