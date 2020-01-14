@@ -6,16 +6,20 @@ public class Lane {
     private int speed;
     private int yPos;
     private int direction;
-    private boolean equallySpaced;
+    private boolean isAnimate;
+    private boolean isAlt;
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
     private Zone[] zones;
     private Image sprite;
-    public Lane(int yPos, int speed, int direction, int type, int zoneNum, String image, int screenLength,boolean equallySpaced){
+    private String path;
+    public Lane(int yPos, int speed, int direction, int type, int zoneNum, String image, int screenLength,boolean equallySpaced,boolean isAlt,boolean isAnimate){
         this.yPos=yPos;
         this.speed=speed;
         this.direction=direction;
-        this.equallySpaced=equallySpaced;
+        this.isAlt=isAlt;
+        this.isAnimate=isAnimate;
+        path=image;
         zones = new Zone[zoneNum];
         // Loading the sprite for each of the zones in the lane
         try{
@@ -47,6 +51,9 @@ public class Lane {
         for(Zone zone:zones){
             zone.moveX(speed * directionModifier);
         }
+       // if(isAnimate){
+           // sprite="Images/Objects/" + path;
+        //}
     }
     public int getYPos(){
         return yPos;

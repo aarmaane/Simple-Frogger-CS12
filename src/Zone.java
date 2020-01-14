@@ -43,6 +43,7 @@ public class Zone {
     public int getY(){
         return zoneRect[Y];
     }
+
     public boolean isSafe(){
         if(zoneType==DEATH){
             return false;
