@@ -1,7 +1,7 @@
-- Add space above and below game for score and lives
 - Organize player class methods
-- Fix lane spacing
 - Get the winning zones working
-- Add turtles
+- Add turtles that can sink under water
 - Add level 2/3
-- Add Cool Frog Hopping Animation
+- Add Cool Frog Hopping Animation After Death
+-Add Menu
+-Maybe Add Snakes/Crocodiles
