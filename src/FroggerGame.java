@@ -103,7 +103,12 @@ class GamePanel extends JPanel implements KeyListener{
             // Making the road lanes
             lanes[i] = new Lane(375+50*i,speed*randint(1,2), direction, Zone.DEATH, randint(1,3),"Cars/car" + (i+1) + ".png", this.getWidth(),false,false,false);
             // Making the river lanes
-            lanes[i+5] = new Lane(75+50*i,speed*randint(1,2), direction, Zone.WALK, 3,"Logs/log" + randint(1,3) + ".png", this.getWidth(),true,false,false);
+            if(direction == Lane.RIGHT){
+                lanes[i+5] = new Lane(75+50*i,speed*randint(1,2), direction, Zone.WALK, 3,"Logs/log" + randint(1,3) + ".png", this.getWidth(),true,false,false);
+            }
+            else{
+                lanes[i+5] = new Lane(75+50*i,speed*randint(1,2), direction, Zone.WALK, 3,"Turtles/turtle", this.getWidth(),true,false,true);
+            }
         }
     }
     public void animate(){
