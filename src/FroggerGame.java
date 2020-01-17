@@ -107,7 +107,7 @@ class GamePanel extends JPanel implements KeyListener{
                 lanes[i+5] = new Lane(75+50*i,speed*randint(1,2), direction, Zone.WALK, 3,"Logs/log" + randint(1,3) + ".png", this.getWidth(),true,false,false);
             }
             else{
-                lanes[i+5] = new Lane(75+50*i,speed*randint(1,2), direction, Zone.WALK, 3,"Turtles/turtle", this.getWidth(),true,false,true);
+                lanes[i+5] = new Lane(75+50*i,speed*randint(1,2), direction, Zone.WALK, 3,"Turtles/turtle", this.getWidth(),true,true,true);
             }
         }
     }
@@ -123,7 +123,7 @@ class GamePanel extends JPanel implements KeyListener{
         // Checking collision with the Lanes
         for(Lane lane:lanes){
             for(Zone zone: lane.getZones()){
-                if(player.zoneCollide(zone) && !collided){
+                if(!zone.isNone() && player.zoneCollide(zone) && !collided){
                     collided = true;
                     if(!zone.isSafe()){
                         player.dieAnimation();
@@ -206,8 +206,13 @@ class GamePanel extends JPanel implements KeyListener{
         g.setColor(new Color(255,255,255));
         for(Lane lane:lanes){
             for(Zone zone: lane.getZones()){
-                g.drawImage(lane.getSprite(), zone.getX(), zone.getY(), this);
-                g.drawRect(zone.getZoneRect()[0],zone.getZoneRect()[1],zone.getZoneRect()[2],zone.getZoneRect()[3]);
+                if(!lane.getIsAlt() || !zone.isNone()){
+                    g.drawImage(lane.getSprite(), zone.getX(), zone.getY(), this);
+                    //g.drawRect(zone.getZoneRect()[0],zone.getZoneRect()[1],zone.getZoneRect()[2],zone.getZoneRect()[3]);
+                }
+                else{
+                    g.drawImage(lane.getAltSprite(), zone.getX(), zone.getY(), this);
+                }
             }
         }
         for(int i=0;i<player.getLives();i++){

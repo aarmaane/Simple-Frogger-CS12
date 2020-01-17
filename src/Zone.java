@@ -3,6 +3,7 @@ import java.awt.*;
 import java.io.*;
 
 public class Zone {
+    public static final int NONE = -1;
     public static final int DEATH = 0;
     public static final int WALK = 1;
     public static final int WIN = 2;
@@ -50,7 +51,16 @@ public class Zone {
         }
         return true;
     }
+    public boolean isNone(){
+        if(zoneType==NONE){
+            return true;
+        }
+        return false;
+    }
     public int[] getZoneRect(){
         return zoneRect;
+    }
+    public int getScreenLength(){
+        return screenLength;
     }
 }
