@@ -14,7 +14,7 @@ public class Lane {
     private Image sprite;
     // Animation related fields
     private Image[] animatedSprites = new Image[3];
-    private Image[] alternatingSprites = new Image[2];
+    private Image[] alternatingSprites = new Image[3];
     private int alternatingZone;
     private int alternateCount;
     private int spriteCount = 0;
@@ -28,17 +28,20 @@ public class Lane {
         Image sizingSprite = null;
         // Loading the sprite for each of the zones in the lane
         try{
+            // Normal sprite loading
             if(!isAnimate){
                 sprite = ImageIO.read(new File("Images/Objects/" + image));
                 sizingSprite = sprite;
             }
+            // Animating sprite loading
             else{
                 for(int i = 0; i < 3; i++){
                     animatedSprites[i] = ImageIO.read(new File("Images/Objects/" + image + (i+1) + ".png"));
                 }
                 sizingSprite = animatedSprites[0];
-                if(isAnimate){
-                    for(int i = 0; i < 2; i++){
+                // Alternating sprite loading
+                if(isAlt){
+                    for(int i = 0; i < 3; i++){
                         alternatingSprites[i] = ImageIO.read(new File("Images/Objects/" + image + (i+4) + ".png"));
                     }
                 }
@@ -60,13 +63,14 @@ public class Lane {
 
             }
         }
-        // Choosing the alternating zone
+        // Choosing the zone that should alternate
         if(isAnimate){
             alternatingZone = randint(0,zones.length - 1);
         }
 
     }
     public void animate(){
+        // Moving all of the zones forward
         int directionModifier = 1;
         if(direction == LEFT){
             directionModifier = -1;
@@ -74,6 +78,7 @@ public class Lane {
         for(Zone zone:zones){
             zone.moveX(speed * directionModifier);
         }
+        // Progressing animation counters
         if(isAnimate){
            spriteCount += 1;
            if(spriteCount > (30*animatedSprites.length) - 1){
@@ -83,23 +88,14 @@ public class Lane {
         if(isAlt){
             alternateCount += 1;
             int[] zoneRect = zones[alternatingZone].getZoneRect();
-            if((alternateCount == (30*alternatingSprites.length))){
+            if((alternateCount == (30*animatedSprites.length))){
                 zones[alternatingZone] = new Zone(Zone.NONE, zones[alternatingZone].getScreenLength(), zoneRect[Zone.X], zoneRect[Zone.Y],zoneRect[Zone.WIDTH],zoneRect[Zone.HEIGHT]);
             }
-            else if(alternateCount > (30*(alternatingSprites.length + 2)) - 1){
+            else if(alternateCount > (30*(animatedSprites.length + alternatingSprites.length)) - 1){
                 alternateCount = 0;
                 zones[alternatingZone] = new Zone(Zone.WALK, zones[alternatingZone].getScreenLength(), zoneRect[Zone.X], zoneRect[Zone.Y],zoneRect[Zone.WIDTH],zoneRect[Zone.HEIGHT]);
             }
         }
-    }
-    private void changeZones(int zoneType){
-        for(int i = 0; i < zones.length; i++){
-            int[] zoneRect = zones[i].getZoneRect();
-            zones[i] = new Zone(zoneType, zones[i].getScreenLength(), zoneRect[Zone.X], zoneRect[Zone.Y],zoneRect[Zone.WIDTH],zoneRect[Zone.HEIGHT]);
-        }
-    }
-    public int getYPos(){
-        return yPos;
     }
     public Image getSprite(){
         if(isAnimate){
@@ -108,12 +104,12 @@ public class Lane {
         return sprite;
     }
     public Image getAltSprite(){
-        return alternatingSprites[alternateCount/30-2];
+        return alternatingSprites[alternateCount/30-animatedSprites.length];
     }
     public Zone[] getZones(){
         return zones;
     }
-    public int getDirection(){ return direction;}
+    public int getDirection(){return direction;}
     public int getSpeed(){return speed;}
     public boolean getIsAlt(){
         return isAlt;

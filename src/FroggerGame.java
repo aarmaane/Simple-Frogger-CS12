@@ -54,6 +54,7 @@ class GamePanel extends JPanel implements KeyListener{
     private int level = 1;
     private int time = 30;
     private Lane[] lanes = new Lane[10];
+    private Lane snakeLane;
     private Zone[] winningZones = new Zone[5]; // 5 small zones that the player whens when they enter
     private boolean[] winningOccupied = new boolean[5];
     // Game Images
@@ -88,33 +89,44 @@ class GamePanel extends JPanel implements KeyListener{
             winningZones[i] = new Zone(Zone.WIN,getWidth(),40+(i*147),40,10,10);
         }
         // Starting the game
-        resetGame(level);
+        resetGame();
     }
     // Game related functions
-    public void resetGame(int speed){
+    public void resetGame(){
         player.resetPos();
         player.resetLives();
         winningOccupied = new boolean[5];
         time = 30;
+        // Making the road lanes
         int direction;
-        for(int i=0;i<5;i++){
-            if(i%2==0) direction = Lane.LEFT;
+        for(int i=0;i<5;i++) {
+            if (i % 2 == 0) direction = Lane.LEFT;
             else direction = Lane.RIGHT;
-            // Making the road lanes
-            lanes[i] = new Lane(375+50*i,speed*randint(1,2), direction, Zone.DEATH, randint(1,3),"Cars/car" + (i+1) + ".png", this.getWidth(),false,false,false);
-            // Making the river lanes
-            if(direction == Lane.RIGHT){
-                lanes[i+5] = new Lane(75+50*i,speed*randint(1,2), direction, Zone.WALK, 3,"Logs/log" + randint(1,3) + ".png", this.getWidth(),true,false,false);
+            lanes[i] = new Lane(375 + 50 * i, level, direction, Zone.DEATH, randint(1, 3), "Cars/car" + (i + 1) + ".png", this.getWidth(), false, false, false);
+        }
+        // Making the river lanes
+        for(int i=0; i<5; i++) {
+            if (i % 2 == 0) direction = Lane.RIGHT;
+            else direction = Lane.LEFT;
+            if (direction == Lane.RIGHT) {
+                lanes[i + 5] = new Lane(75 + 50 * i, level*randint(1,2), direction, Zone.WALK, 3, "Logs/log" + randint(1, 3) + ".png", this.getWidth(), true, false, false);
             }
-            else{
-                lanes[i+5] = new Lane(75+50*i,speed*randint(1,2), direction, Zone.WALK, 3,"Turtles/turtle", this.getWidth(),true,true,true);
+            else {
+                lanes[i + 5] = new Lane(75 + 50 * i, level*randint(1,2), direction, Zone.WALK, 3, "Turtles/turtle", this.getWidth(), true, true, true);
             }
+        }
+        // Adding snake lane
+        if(level > 1){
+            snakeLane = new Lane(325, level, Lane.LEFT, Zone.DEATH, randint(1,3),"Snakes/snake", this.getWidth(), true, false, true);
         }
     }
     public void animate(){
         player.animate();
         for(Lane lane:lanes){
             lane.animate();
+        }
+        if(level > 1){
+            snakeLane.animate();
         }
     }
 
@@ -159,7 +171,7 @@ class GamePanel extends JPanel implements KeyListener{
         }
         if(count == winningOccupied.length){
             level++;
-            resetGame(level);
+            resetGame();
         }
         // Checking if the death animation is done
         if(player.getStatus() == Player.DEAD && player.isDeathDone()){
@@ -169,7 +181,7 @@ class GamePanel extends JPanel implements KeyListener{
             }
             else{
                 level = 1;
-                resetGame(level);
+                resetGame();
                 player.resetScore();
             }
         }
@@ -179,7 +191,7 @@ class GamePanel extends JPanel implements KeyListener{
             time--;
         }
         else{
-            resetGame(level);
+            resetGame();
         }
 
     }
@@ -215,19 +227,25 @@ class GamePanel extends JPanel implements KeyListener{
                 }
             }
         }
-        for(int i=0;i<player.getLives();i++){
-            g.drawImage(livePic,50*i,670,this);
+        if(level > 1){
+            for(Zone zone: snakeLane.getZones()){
+                g.drawImage(snakeLane.getSprite(), zone.getX(), zone.getY(), this);
+            }
         }
         // Drawing the player
         g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y), this);
-        g.drawRect(player.getPos(Player.X)+8,player.getPos(Player.Y)+10,player.getPos(2)-16,player.getPos(3)-20);
-        g.fillRect(100+7*(60-time),685,7*time,25);
+        //g.drawRect(player.getPos(Player.X)+8,player.getPos(Player.Y)+10,player.getPos(2)-16,player.getPos(3)-20);
         // Drawing the frogs to represent the winning areas the player has reached
         for(int i = 0; i < 5; i++){
             if(winningOccupied[i]){
                 g.drawImage(winningImage[i%2], 19 + (i*148), 27, null);
             }
         }
+        // Drawing the stats
+        for(int i=0;i<player.getLives();i++){
+            g.drawImage(livePic,50*i,670,this);
+        }
+        g.fillRect(100+7*(60-time),685,7*time,25);
         // Drawing text
         Graphics2D g2d = (Graphics2D) g;
         g2d.setFont(arcadeFont);
