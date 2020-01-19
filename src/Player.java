@@ -173,8 +173,8 @@ public class Player {
     public int getScore(){
         return score;
     }
-    public void addScore(int points){
-        score += points;
+    public void addScore(int points,int time){
+        score += (points+20*time);
     }
     public void resetScore(){
         score=0;

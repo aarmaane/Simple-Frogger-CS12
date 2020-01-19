@@ -168,7 +168,7 @@ class GamePanel extends JPanel implements KeyListener{
             if(player.zoneCollide(zone) && !winningOccupied[i]){
                 winningOccupied[i] = true;
                 player.resetPos();
-                player.addScore(150);
+                player.addScore(150,time);
                 player.resetLaneScoring();
                 resetTime();
             }
