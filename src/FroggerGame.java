@@ -45,6 +45,9 @@ public class FroggerGame extends JFrame{
 }
 
 class GamePanel extends JPanel implements KeyListener{
+    //Constants
+    public static final int LANE2=1;
+    public static final int LANE4=3;
     // Window related Objects
     public boolean ready = true;
     private boolean[] keysPressed;
@@ -107,7 +110,7 @@ class GamePanel extends JPanel implements KeyListener{
         // Making the river lanes
         int rivSpeed;
         for(int i=0; i<5; i++) {
-            if(i==1 || i==3) rivSpeed=2*level;
+            if(i==LANE2 || i==LANE4) rivSpeed=2*level;
             else rivSpeed=level;
 
             if (i % 2 == 0) direction = Lane.RIGHT;
@@ -150,6 +153,13 @@ class GamePanel extends JPanel implements KeyListener{
                     }
                 }
 
+            }
+        }
+        if(level>1) {
+            for (Zone zone : snakeLane.getZones()){
+                if(!zone.isSafe() && player.zoneCollide(zone)){
+                    player.dieAnimation();
+                }
             }
         }
         // Checking collisions with winning zones
