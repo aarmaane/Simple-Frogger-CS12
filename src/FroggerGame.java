@@ -195,6 +195,7 @@ class GamePanel extends JPanel implements KeyListener{
             if(player.getLives() > 0){
                 player.kill();
                 player.resetPos();
+                time = 30;
             }
             else{
                 level = 1;
@@ -208,7 +209,7 @@ class GamePanel extends JPanel implements KeyListener{
             time--;
         }
         else{
-            resetGame();
+            player.dieAnimation();
         }
 
     }
