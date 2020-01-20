@@ -46,7 +46,8 @@ public class FroggerGame extends JFrame{
 
 class GamePanel extends JPanel implements KeyListener{
     //Constants
-    public static final int LANE2=1;
+    public static final int LANE1=0;
+    public static final int LANE3=2;
     public static final int LANE4=3;
     // Window related Objects
     public boolean ready = true;
@@ -102,20 +103,21 @@ class GamePanel extends JPanel implements KeyListener{
         time = 30;
         // Making the road lanes
         int direction;
+        int roadSpeed;
+        int rivSpeed;
         for(int i=0;i<5;i++) {
+            if(i==LANE3) roadSpeed=2*level;
+            else roadSpeed=level;
             if (i % 2 == 0) direction = Lane.LEFT;
             else direction = Lane.RIGHT;
-            lanes[i] = new Lane(375 + 50 * i, level, direction, Zone.DEATH, randint(1, 3), "Cars/car" + (i + 1) + ".png", this.getWidth(), false, false, false);
+            lanes[i] = new Lane(375 + 50 * i, roadSpeed, direction, Zone.DEATH, randint(1, 3), "Cars/car" + (i + 1) + ".png", this.getWidth(), false, false, false);
         }
         // Making the river lanes
-        int rivSpeed;
         for(int i=0; i<5; i++) {
-            if(i==LANE2 || i==LANE4) rivSpeed=2*level;
+            if(i==LANE1 || i==LANE4) rivSpeed=2*level;
             else rivSpeed=level;
-
             if (i % 2 == 0) direction = Lane.RIGHT;
             else direction = Lane.LEFT;
-
             if (direction == Lane.RIGHT) {
                 lanes[i + 5] = new Lane(75 + 50 * i, rivSpeed, direction, Zone.WALK, 3, "Logs/log" + randint(1, 3) + ".png", this.getWidth(), true, false, false);
             }
