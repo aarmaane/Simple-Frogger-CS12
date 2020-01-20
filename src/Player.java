@@ -40,7 +40,7 @@ public class Player {
                 for(int f = 0; f < 2; f++){
                     sprites[i][f] = ImageIO.read(new File(spritePath + "/frog" +imageNum + ".png"));
                     imageNum++;
-                };
+                }
             }
             for(int i=0;i<7;i++){
                 deathSprites[i] = ImageIO.read(new File("Images/Frog/death"+(i+1)+".png"));
@@ -91,7 +91,6 @@ public class Player {
             if(direction==UP && pos[Y]==highestLane){
                 highestLane-=50;
                 score+=10;
-
             }
         }
     }

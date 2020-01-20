@@ -195,7 +195,7 @@ class GamePanel extends JPanel implements KeyListener{
             if(player.getLives() > 0){
                 player.kill();
                 player.resetPos();
-                time = 30;
+                resetTime();
             }
             else{
                 level = 1;
