@@ -3,21 +3,29 @@ import java.awt.*;
 import java.io.*;
 
 public class Lane {
+    //This class helps organize the different zones in the game into Lanes
+
+    //Declaring Constants
+    public static final int LEFT = 0;
+    public static final int RIGHT = 1;
+
+    ////Declaring Object Fields
     private int speed;
     private int yPos;
     private int direction;
-    private boolean isAnimate;
-    private boolean isAlt;
-    public static final int LEFT = 0;
-    public static final int RIGHT = 1;
+    private boolean isAnimate; //If the Lane has zones that animate they will need multiple sprites
+    private boolean isAlt; //The turtles alternate between sinking and swimming so this boolean tracks the turtle which alternates
     private Zone[] zones;
     private Image sprite;
+
     // Animation related fields
-    private Image[] animatedSprites = new Image[3];
-    private Image[] alternatingSprites = new Image[3];
+    private Image[] animatedSprites = new Image[3];//Array of sprites for the animation of the zones
+    private Image[] alternatingSprites = new Image[3];//Array of sprites for alternating animation of the zones
     private int alternatingZone;
     private int alternateCount;
     private int spriteCount = 0;
+
+    //Constructor
     public Lane(int yPos, int speed, int direction, int type, int zoneNum, String image, int screenLength,boolean equallySpaced,boolean isAlt,boolean isAnimate){
         this.yPos=yPos;
         this.speed=speed;
@@ -63,7 +71,7 @@ public class Lane {
 
             }
         }
-        // Choosing the zone that should alternate
+        // Randomly choosing the zone that should alternate
         if(isAnimate){
             alternatingZone = randint(0,zones.length - 1);
         }
@@ -85,25 +93,35 @@ public class Lane {
                spriteCount = 0;
            }
         }
+        //Progressing animation counters for the alternating sprites
         if(isAlt){
             alternateCount += 1;
-            int[] zoneRect = zones[alternatingZone].getZoneRect();
+            int[] zoneRect = zones[alternatingZone].getZoneRect();//getting the zoneRect for the zone that will alternate
             if((alternateCount == (30*animatedSprites.length))){
+                //Once the zone has cycled through one alternation, it is replaced with a "None" zone to mimic the turtle going underwater
                 zones[alternatingZone] = new Zone(Zone.NONE, zones[alternatingZone].getScreenLength(), zoneRect[Zone.X], zoneRect[Zone.Y],zoneRect[Zone.WIDTH],zoneRect[Zone.HEIGHT]);
             }
             else if(alternateCount > (30*(animatedSprites.length + alternatingSprites.length)) - 1){
-                alternateCount = 0;
+                //Once the counter has gone past the set number, the zone is changed back to a "Walk" zone to mimic the turtle coming
+                //up from under the water
+                alternateCount = 0;// Resetting the counter
                 zones[alternatingZone] = new Zone(Zone.WALK, zones[alternatingZone].getScreenLength(), zoneRect[Zone.X], zoneRect[Zone.Y],zoneRect[Zone.WIDTH],zoneRect[Zone.HEIGHT]);
             }
         }
     }
+
+    ////Methods that return fields from the Lane class
+
     public Image getSprite(){
+        //This method returns the current sprite of the Lane
         if(isAnimate){
+            //If the lane returns animated sprites, then the current Image in the Array is returned
             return animatedSprites[spriteCount/30];
         }
-        return sprite;
+        return sprite;//Non-animated sprite
     }
     public Image getAltSprite(){
+        //Returns the current alternating sprite of the Lane
         return alternatingSprites[alternateCount/30-animatedSprites.length];
     }
     public Zone[] getZones(){
