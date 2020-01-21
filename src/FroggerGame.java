@@ -1,3 +1,8 @@
+//FroggerGame.java
+//Shivan Gaur and Armaan Randhawa
+//The program uses multiple classes and objects to recreate the 80s video game "Frogger" to make a fun experience for the player.
+
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -59,8 +64,8 @@ class GamePanel extends JPanel implements KeyListener{
     private int time = 30;
     private Lane[] lanes = new Lane[10];
     private Lane snakeLane;
-    private Zone[] winningZones = new Zone[5]; // 5 small zones that the player whens when they enter
-    private boolean[] winningOccupied = new boolean[5];
+    private Zone[] winningZones = new Zone[5]; // 5 small zones that the player wins when they enter
+    private boolean[] winningOccupied = new boolean[5];//Booleans for whether the player has already been to the zone correspoing to WinningZones
     // Game Images
     private Image background;
     private Image[] winningImage = new Image[2];
@@ -97,6 +102,7 @@ class GamePanel extends JPanel implements KeyListener{
     }
     // Game related functions
     public void resetGame(){
+        //This method begins the game and is also used to reset the game.
         player.resetPos();
         player.resetLives();
         winningOccupied = new boolean[5];
@@ -108,16 +114,21 @@ class GamePanel extends JPanel implements KeyListener{
         for(int i=0;i<5;i++) {
             if(i==LANE3) roadSpeed=2*level;
             else roadSpeed=level;
+
             if (i % 2 == 0) direction = Lane.LEFT;
             else direction = Lane.RIGHT;
+
             lanes[i] = new Lane(375 + 50 * i, roadSpeed, direction, Zone.DEATH, randint(1, 3), "Cars/car" + (i + 1) + ".png", this.getWidth(), false, false, false);
         }
         // Making the river lanes
         for(int i=0; i<5; i++) {
             if(i==LANE1 || i==LANE4) rivSpeed=2*level;
             else rivSpeed=level;
+
             if (i % 2 == 0) direction = Lane.RIGHT;
             else direction = Lane.LEFT;
+
+            //In the river, alternating lanes are logs and turtles
             if (direction == Lane.RIGHT) {
                 lanes[i + 5] = new Lane(75 + 50 * i, rivSpeed, direction, Zone.WALK, 3, "Logs/log" + randint(1, 3) + ".png", this.getWidth(), true, false, false);
             }
@@ -131,6 +142,7 @@ class GamePanel extends JPanel implements KeyListener{
         }
     }
     public void animate(){
+        //This method animates all moving objects in the game.
         player.animate();
         for(Lane lane:lanes){
             lane.animate();
@@ -141,25 +153,27 @@ class GamePanel extends JPanel implements KeyListener{
     }
 
     public void checkCollisions(){
-        boolean collided = false;
+        //This method checks collision between the player object and the enemy zones (cars, water, snakes etc.)
+        boolean collided = false;//Boolean for whether the player has collided or not
         // Checking collision with the Lanes
         for(Lane lane:lanes){
             for(Zone zone: lane.getZones()){
                 if(!zone.isNone() && player.zoneCollide(zone) && !collided){
                     collided = true;
                     if(!zone.isSafe()){
-                        player.dieAnimation();
+                        player.dieAnimation();//If the player collided with a death zone then the die animation commences.
                     }
                     else{
-                        player.moveWithLane(lane);
+                        player.moveWithLane(lane);//If it's a safe zone (logs, turtles) then they move with the zone.
                     }
                 }
 
             }
         }
-        if(level>1) {
+
+        if(level>1) {//If the level if greater than 1, then snakes are introduced
             for (Zone zone : snakeLane.getZones()){
-                if(!zone.isSafe() && player.zoneCollide(zone)){
+                if(!zone.isSafe() && player.zoneCollide(zone)){//Checking collision with the snakes
                     player.dieAnimation();
                 }
             }
@@ -167,7 +181,7 @@ class GamePanel extends JPanel implements KeyListener{
         // Checking collisions with winning zones
         for(int i = 0; i < 5; i++){
             Zone zone = winningZones[i];
-            if(player.zoneCollide(zone) && !winningOccupied[i]){
+            if(player.zoneCollide(zone) && !winningOccupied[i]){//If the player collides with an unoccupied winning zone.
                 winningOccupied[i] = true;
                 player.resetPos();
                 player.addScore(150,time);
@@ -238,7 +252,6 @@ class GamePanel extends JPanel implements KeyListener{
             for(Zone zone: lane.getZones()){
                 if(!lane.getIsAlt() || !zone.isNone()){
                     g.drawImage(lane.getSprite(), zone.getX(), zone.getY(), this);
-                    //g.drawRect(zone.getZoneRect()[0],zone.getZoneRect()[1],zone.getZoneRect()[2],zone.getZoneRect()[3]);
                 }
                 else{
                     g.drawImage(lane.getAltSprite(), zone.getX(), zone.getY(), this);
@@ -252,7 +265,6 @@ class GamePanel extends JPanel implements KeyListener{
         }
         // Drawing the player
         g.drawImage(player.getCurrentImage(), player.getPos(Player.X), player.getPos(Player.Y), this);
-        //g.drawRect(player.getPos(Player.X)+8,player.getPos(Player.Y)+10,player.getPos(2)-16,player.getPos(3)-20);
         // Drawing the frogs to represent the winning areas the player has reached
         for(int i = 0; i < 5; i++){
             if(winningOccupied[i]){
@@ -264,6 +276,7 @@ class GamePanel extends JPanel implements KeyListener{
             g.drawImage(livePic,50*i,670,this);
         }
         g.fillRect(100+7*(60-time),685,7*time,25);
+
         // Drawing text
         Graphics2D g2d = (Graphics2D) g;
         g2d.setFont(arcadeFont);

@@ -1,5 +1,5 @@
 //Player.java
-//Armaan Randhawa and Shivan Gaur
+//Shivan Gaur and Armaan Randhawa
 //Class that creates the user's "player" object that has it's coordinates, lives, score, and different sprites
 
 import javax.imageio.*;

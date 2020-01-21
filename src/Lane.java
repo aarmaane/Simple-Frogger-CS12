@@ -1,5 +1,5 @@
 //Lane.java
-//Armaan Randhawa and Shivan Gaur
+//Shivan Gaur and Armaan Randhawa
 //Class that creates Lane objects with conditions including direction, Image, type and position to organize the Zones of the game.
 
 
