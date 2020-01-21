@@ -1,3 +1,8 @@
+//Lane.java
+//Armaan Randhawa and Shivan Gaur
+//Class that creates Lane objects with conditions including direction, Image, type and position to organize the Zones of the game.
+
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.*;
