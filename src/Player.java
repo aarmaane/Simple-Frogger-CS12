@@ -124,7 +124,7 @@ public class Player {
         DO NOT overlap*/
 
         // If one rectangle is on left side of other
-        int[] hitBox = {pos[X]+4,pos[Y]+5,pos[WIDTH]-16,pos[HEIGHT]-20};
+        int[] hitBox = {pos[X]+15,pos[Y]+16,pos[WIDTH]-30,pos[HEIGHT]-32}; // Declaring the hitbox of the frog
         if (hitBox[X] > zoneRect[X]+zoneRect[WIDTH] || zoneRect[X] > hitBox[X]+hitBox[WIDTH]) {
             return false;
         }

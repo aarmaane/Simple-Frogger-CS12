@@ -94,7 +94,7 @@ class GamePanel extends JPanel implements KeyListener{
         player = new Player(310,625, "Images/Frog"); // Making the player object
         // Making the winning zones
         for(int i = 0; i < 5; i++){
-            winningZones[i] = new Zone(Zone.WIN,getWidth(),40+(i*147),40,10,10);
+            winningZones[i] = new Zone(Zone.WIN,getWidth(),35+(i*147),40,20,20);
         }
         // Starting the game
         resetGame();
