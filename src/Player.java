@@ -20,15 +20,15 @@ public class Player {
     public static final int ALIVE = 1;
     // Declaring fields
     private int[] pos = new int[4];
-    private Image[][] sprites = new Image[4][2];//Array with 2 sprites for each direction the player moves (8 total)
-    private Image[] deathSprites = new Image[7];//Array will all sprites for the death animations
-    private int direction;
+    private Image[][] sprites = new Image[4][2]; //Array with 2 sprites for each direction the player moves (8 total)
+    private Image[] deathSprites = new Image[7]; //Array will all sprites for the death animations
+    private int direction; // Direction that the player is facing (represented as an integer by constants)
     private int lives;
     private int highestLane; //The highest lane the player has reached
-    private int xMove, yMove;
-    private int score;
-    private int status;
-    private int deathCount;//Counter for death animation
+    private int xMove, yMove; // The amount the player still has to move by in the x and y coordinates
+    private int score; // Player's current score
+    private int status; // Status holds if the Player is alive or dead
+    private int deathCount; //Counter for death animation
     // Constructor
     public Player(int x, int y, String spritePath){
         pos[X] = x;
@@ -56,17 +56,20 @@ public class Player {
             System.out.println("Invalid sprite path");
             System.exit(1);
         }
+        // Storing sprite size
         pos[WIDTH]=sprites[0][0].getWidth(null);
         pos[HEIGHT]=sprites[0][0].getHeight(null);
 
     }
     ////Methods
     public void animate(){
-        //Method that animates the player according to its status
+        // Method that animates the player and continues to move it on the screen
         if(status == DEAD){
-            deathCount += 1;//increasing death counter
+            deathCount += 1; //increasing death counter if the player is in the dying animation
         }
+        // Moving/Animating the player by the stored value that they still have to move by
         else if(xMove != 0){
+            // Modifying the values added to the X position and taken away from remaining xMove depending on the direction that was specified (by a negative or positive value)
             int negativeModifier = 1;
             if(xMove < 0){
                 negativeModifier = -1;
@@ -75,6 +78,7 @@ public class Player {
             xMove -= 5 * negativeModifier;
         }
         else if(yMove != 0){
+            // Same as above but for y coordinate
             int negativeModifier = 1;
             if(yMove < 0){
                 negativeModifier = -1;
@@ -84,12 +88,15 @@ public class Player {
         }
     }
     public void jump(int dir, int deltaX, int deltaY){
-        if(xMove == 0 && yMove == 0 && status == ALIVE) {
-            direction = dir;
+        // Method to make the Player jump
+        if(xMove == 0 && yMove == 0 && status == ALIVE) { // Only letting the code run if there is no ongoing jump and the Player is alive
+            direction = dir; // Setting the new player direction
+            // Storing the amount the player needs to move by
             xMove += deltaX;
             yMove += deltaY;
+            // Keeping track of the highest lane the Player has entered
             if(direction==UP && pos[Y]==highestLane){
-                //One the player reaches a new Lane, that becomes the new highest Lane, and 10 points gets added to their score
+                //Once the player reaches a new Lane, that becomes the new highest Lane, and 10 points gets added to their score
                 highestLane-=50;
                 score+=10;
             }
@@ -100,7 +107,9 @@ public class Player {
         score += (points+20*time);
     }
     public void moveWithLane(Lane lane){
-        if(yMove == 0 && status == ALIVE){
+        // Method to move the player with the same momentum as the objects in the specified lane
+        if(yMove == 0 && status == ALIVE){ // Only letting the code run if the player isn't jumping up/down and is alive
+            // Moving the player depending on the speed and direction of the lane
             if(lane.getDirection() == Lane.LEFT){
                 pos[X] -= lane.getSpeed();
             }
@@ -110,10 +119,9 @@ public class Player {
         }
     }
 
-
     public boolean doesOverlap(int[]zoneRect) {
         /*This method calculates whether the given zoneRect overlaps with the player's Rect by checking the situations where the Rects
-        DO overlap*/
+        DO NOT overlap*/
 
         // If one rectangle is on left side of other
         int[] hitBox = {pos[X]+4,pos[Y]+5,pos[WIDTH]-16,pos[HEIGHT]-20};
@@ -135,10 +143,16 @@ public class Player {
     }
 
     ///Death Methods
-    public void kill(){ lives--;}
-    public void dieAnimation(){ status=DEAD; }
+    public void kill(){
+        // Taking away a life from the player
+        lives--;
+    }
+    public void dieAnimation(){
+        // Setting the players status to Dead, which will allow the death animation code to run its course
+        status=DEAD;
+    }
     public boolean isDeathDone(){
-        //This method returns whether the death animation has completed or not.
+        //This method returns whether the death animation has completed or not based on the counter.
         if(deathCount < 100){
             return false;
         }
@@ -149,23 +163,23 @@ public class Player {
     public Image getCurrentImage(){
         //Method that returns current Image of the player that is associated with its status
         if(status == DEAD){
-            //Getting the appropriate death sprite depending on where the player is
+            //Getting the appropriate death sprite depending on where the player is and how much of the animation is done
             return getDeathImage();
         }
-        //returning the moving sprite for the current direction
+        // Returning the moving sprite for the current direction if the player is in motion
         else if(xMove != 0 || yMove != 0){
             return sprites[direction][1];
         }
-        //returning the stationary sprite for the current direction
+        // Returning the stationary sprite for the current direction if none of the above were true
         return sprites[direction][0];
     }
     public Image getDeathImage(){
-        // Seeing if we should return the water or road versions of sprites
+        // Seeing if we should return the water or road versions of sprites and setting an offset for the sprites if needed
         int waterSpriteOffset = 0;
         if(pos[Y] < 285){
             waterSpriteOffset = 4;
         }
-        // Calculating which sprite to return
+        // Calculating which sprite to return depending on how much the animation has already progressed (by looking at the counter)
         if(deathCount>-1 && deathCount<26)
             return deathSprites[0 + waterSpriteOffset];
         else if(deathCount>25 && deathCount<51)
@@ -183,7 +197,7 @@ public class Player {
     //Reset Methods
     public void resetLives(){ lives = 2; }
     public void resetPos(){
-        //This method resets all the fields of the player back to normal
+        //This method resets all the position related fields of the player back to normal
         status = ALIVE;
         direction = UP;
         deathCount = 0;
@@ -193,10 +207,12 @@ public class Player {
         yMove = 0;
     }
     public void resetScore(){
+        // Resets the score and calls the resetLane scoring method
         score=0;
         resetLaneScoring();
     }
     public void resetLaneScoring(){
+        // This method resets the scoring based on reaching new lanes
         highestLane=625;
     }
 }
