@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-//Main Class
+//Main Class "Menu"
 public class Menu extends JFrame{
     //Creating the layeredPane
     private JLayeredPane layeredPane=new JLayeredPane();
