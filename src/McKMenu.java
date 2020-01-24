@@ -20,17 +20,21 @@ public class McKMenu extends JFrame{
         back.setBounds(0, 0,backPic.getIconWidth(),backPic.getIconHeight());
         layeredPane.add(back,1);
 
-        ImageIcon startPic = new ImageIcon("Images/Menu/start.png");
-        ImageIcon instPic = new ImageIcon("Images/Menu/inst.png");
-        JButton startBtn = new JButton(startPic);
-        JButton instBtn= new JButton(instPic);
+        //ImageIcon startPic = new ImageIcon("Images/Menu/start.png");
+        //ImageIcon instPic = new ImageIcon("Images/Menu/inst.png");
+        JButton startBtn = new JButton("Play Game");
+        JButton instBtn= new JButton("Instructions");
         startBtn.addActionListener(new ClickStart());
         instBtn.addActionListener(new ClickStart());
-        startBtn.setBounds(220,370,instPic.getIconWidth(),startPic.getIconHeight());
-        instBtn.setBounds(220,445,instPic.getIconWidth(),instPic.getIconHeight());
+        startBtn.setBounds(180,340,300,50);
+
+        instBtn.setBounds(180,415,300,50);
         layeredPane.add(startBtn,2);
         layeredPane.add(instBtn,3);
-
+        startBtn.setBorder(null);
+        startBtn.setFocusPainted(false);
+        instBtn.setBorder(null);
+        instBtn.setFocusPainted(false);
         setContentPane(layeredPane);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
