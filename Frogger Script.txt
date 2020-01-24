@@ -1,0 +1,4 @@
+Welcome to Frogger! Your objective is to get into all 5 openings at the end of the river without
+coming into contact with any cars or snakes! Be sure to avoid drowning in the river by hopping on logs and turtles.
+Once you reach all 5 openings you promote to the next level. Hurry! You only have 30 seconds for
+each opening. Once you lose all 3 of your lives it's Game Over! Good Luck!

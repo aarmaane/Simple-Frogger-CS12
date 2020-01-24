@@ -21,10 +21,15 @@ public class McKMenu extends JFrame{
         layeredPane.add(back,1);
 
         ImageIcon startPic = new ImageIcon("Images/Menu/start.png");
+        ImageIcon instPic = new ImageIcon("Images/Menu/inst.png");
         JButton startBtn = new JButton(startPic);
+        JButton instBtn= new JButton(instPic);
         startBtn.addActionListener(new ClickStart());
-        startBtn.setBounds(245,370,startPic.getIconWidth(),startPic.getIconHeight());
+        instBtn.addActionListener(new ClickStart());
+        startBtn.setBounds(220,370,instPic.getIconWidth(),startPic.getIconHeight());
+        instBtn.setBounds(220,445,instPic.getIconWidth(),instPic.getIconHeight());
         layeredPane.add(startBtn,2);
+        layeredPane.add(instBtn,3);
 
         setContentPane(layeredPane);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
