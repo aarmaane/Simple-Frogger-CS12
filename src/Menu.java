@@ -26,7 +26,7 @@ public class Menu extends JFrame{
         back.setBounds(0, 0,backPic.getIconWidth(),backPic.getIconHeight());
         logo.setBounds(110,160,logoPic.getIconWidth(),logoPic.getIconHeight());
         strip.setBounds(0,670,blackStrip.getIconWidth(),blackStrip.getIconHeight());
-        credits.setBounds(5,675,creditsPic.getIconWidth(),creditsPic.getIconHeight());
+        credits.setBounds(165,680,creditsPic.getIconWidth(),creditsPic.getIconHeight());
         JButton startBtn = new JButton("Play Game");
         startBtn.addActionListener(new ClickStart());
         startBtn.setBounds(160,450,350,70);
