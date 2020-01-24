@@ -20,19 +20,18 @@ public class McKMenu extends JFrame{
         JLabel back = new JLabel(backPic);
         JLabel logo = new JLabel(logoPic);
         back.setBounds(0, 0,backPic.getIconWidth(),backPic.getIconHeight());
-        logo.setBounds(100,100,logoPic.getIconWidth(),logoPic.getIconHeight());
+        logo.setBounds(125,160,logoPic.getIconWidth(),logoPic.getIconHeight());
         layeredPane.add(back, Integer.valueOf(0));
         layeredPane.add(logo, Integer.valueOf(1));
         JButton startBtn = new JButton("Play Game");
         startBtn.addActionListener(new ClickStart());
-        startBtn.setBounds(180,410,300,50);
+        startBtn.setBounds(160,450,350,70);
         layeredPane.add(startBtn, Integer.valueOf(2));
-        //startBtn.setFocusPainted(false);
-        //startBtn.setBorder(null);
+        startBtn.setFocusPainted(false);
+        startBtn.setBorder(null);
         setContentPane(layeredPane);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-        int ok=1;
     }
 
     public static void main(String[] arguments) {
