@@ -20,7 +20,7 @@ public class McKMenu extends JFrame{
         JLabel back = new JLabel(backPic);
         JLabel logo = new JLabel(logoPic);
         back.setBounds(0, 0,backPic.getIconWidth(),backPic.getIconHeight());
-        logo.setBounds(125,160,logoPic.getIconWidth(),logoPic.getIconHeight());
+        logo.setBounds(110,160,logoPic.getIconWidth(),logoPic.getIconHeight());
         layeredPane.add(back, Integer.valueOf(0));
         layeredPane.add(logo, Integer.valueOf(1));
         JButton startBtn = new JButton("Play Game");
