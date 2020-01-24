@@ -1,4 +1,4 @@
-//McKMenu.java
+//Menu.java
 //Shivan Gaur and Armaan Randhawa
 //This is a program given by Mr. Mckenzie, and is used to be the Menu for the Frogger Game
 
@@ -7,10 +7,10 @@ import java.awt.*;
 import java.awt.event.*;
 
 //Main Class
-public class McKMenu extends JFrame{
+public class Menu extends JFrame{
     private JLayeredPane layeredPane=new JLayeredPane();
 
-    public McKMenu() {
+    public Menu() {
         //Constructor for this class which creates the Menu
         super("Frogger");
         setSize(680,750);//Sie
@@ -40,7 +40,7 @@ public class McKMenu extends JFrame{
     }
 
     public static void main(String[] arguments) {
-        McKMenu frame = new McKMenu();
+        Menu frame = new Menu();
     }
 
     class ClickStart implements ActionListener{
