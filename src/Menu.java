@@ -18,12 +18,15 @@ public class Menu extends JFrame{
         ImageIcon backPic = new ImageIcon("Images/Background/Background1.png");
         ImageIcon logoPic= new ImageIcon("Images/Menu/logo.png");
         ImageIcon blackStrip = new ImageIcon("Images/Menu/blackStrip.png");
+        ImageIcon creditsPic = new ImageIcon("Images/Menu/credits.png");
         JLabel back = new JLabel(backPic);
         JLabel logo = new JLabel(logoPic);
         JLabel strip = new JLabel(blackStrip);
+        JLabel credits = new JLabel(creditsPic);
         back.setBounds(0, 0,backPic.getIconWidth(),backPic.getIconHeight());
         logo.setBounds(110,160,logoPic.getIconWidth(),logoPic.getIconHeight());
-        strip.setBounds(0,710,blackStrip.getIconWidth(),blackStrip.getIconHeight());
+        strip.setBounds(0,670,blackStrip.getIconWidth(),blackStrip.getIconHeight());
+        credits.setBounds(5,675,creditsPic.getIconWidth(),creditsPic.getIconHeight());
         JButton startBtn = new JButton("Play Game");
         startBtn.addActionListener(new ClickStart());
         startBtn.setBounds(160,450,350,70);
@@ -31,6 +34,7 @@ public class Menu extends JFrame{
         layeredPane.add(logo, Integer.valueOf(1));
         layeredPane.add(startBtn, Integer.valueOf(2));
         layeredPane.add(strip, Integer.valueOf(3));
+        layeredPane.add(credits, Integer.valueOf(4));
         //startBtn.setFocusPainted(false);
         //startBtn.setBorder(null);
         setContentPane(layeredPane);
