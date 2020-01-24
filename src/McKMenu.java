@@ -15,14 +15,20 @@ public class McKMenu extends JFrame{
         super("Frogger");
         setSize(680,750);//Sie
 
-        ImageIcon backPic = new ImageIcon("Images/Menu/menu.png");
+        ImageIcon backPic = new ImageIcon("Images/Background/Background1.png");
+        ImageIcon logoPic= new ImageIcon("Images/Background/logo.png");
         JLabel back = new JLabel(backPic);
+        JLabel logo = new JLabel(logoPic);
         back.setBounds(0, 0,backPic.getIconWidth(),backPic.getIconHeight());
+        logo.setBounds(100,100,logoPic.getIconWidth(),logoPic.getIconHeight());
         layeredPane.add(back,1);
+        layeredPane.add(logo,2);
         JButton startBtn = new JButton("Play Game");
         startBtn.addActionListener(new ClickStart());
-        startBtn.setBounds(180,340,300,50);
-        layeredPane.add(startBtn,2);
+        startBtn.setBounds(180,410,300,50);
+        layeredPane.add(startBtn,3);
+        startBtn.setFocusPainted(false);
+        startBtn.setBorder(null);
         setContentPane(layeredPane);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
