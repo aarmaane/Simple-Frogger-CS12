@@ -26,6 +26,7 @@ public class McKMenu extends JFrame{
         setContentPane(layeredPane);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+        int ok=1;
     }
 
     public static void main(String[] arguments) {
