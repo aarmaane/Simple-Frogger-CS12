@@ -123,7 +123,7 @@ public class Lane {
             //If the lane returns animated sprites, then the current Image in the Array is returned
             return animatedSprites[spriteCount/30];
         }
-        return sprite;//Non-animated sprite
+        return sprite; //Non-animated sprite
     }
     public Image getAltSprite(){
         //Returns the current alternating sprite of the Lane
